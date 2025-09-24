@@ -1,12 +1,37 @@
 import { useEffect, useState } from "react";
 import type { Quizz } from "../types";
-import { decodeQuizFromUrl } from "../utils/quiz";
+import { decodeQuizFromUrl, encodeQuizToUrl } from "../utils/quiz";
 import Quiz from "./Quiz";
 
 export default function App() {
   const [quiz, setQuiz] = useState<Quizz | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Sample quiz for the example
+  const sampleQuiz: Quizz = {
+    title: "Sample Quiz",
+    description: "A test quiz",
+    questions: [
+      {
+        type: "true-false",
+        statement: "The sky is blue",
+        answer: true,
+        points: 100,
+      },
+    ],
+  };
+
+  const handleEditSample = () => {
+    const encodedQuiz = encodeQuizToUrl(sampleQuiz);
+    const editorUrl = `/editor?${encodedQuiz.split("?")[1]}`;
+    window.location.href = editorUrl;
+  };
+
+  const handlePreviewSample = () => {
+    const encodedUrl = encodeQuizToUrl(sampleQuiz);
+    window.location.href = encodedUrl;
+  };
 
   useEffect(() => {
     try {
@@ -50,7 +75,7 @@ export default function App() {
               ?q=[base64-encoded-quiz]
             </code>
           </p>
-          <div className="text-left bg-gray-50 rounded-lg p-4 mb-6">
+          <div className="text-left bg-gray-50 rounded-lg p-4 mb-6 relative">
             <h3 className="font-semibold text-gray-800 mb-2">
               Sample Quiz Format:
             </h3>
@@ -68,6 +93,22 @@ export default function App() {
   ]
 }`}
             </pre>
+            <div className="absolute bottom-2 right-2 flex gap-1">
+              <button
+                onClick={handleEditSample}
+                className="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors"
+                title="Edit this sample quiz"
+              >
+                Edit
+              </button>
+              <button
+                onClick={handlePreviewSample}
+                className="px-2 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-700 rounded transition-colors"
+                title="Preview this sample quiz"
+              >
+                Preview
+              </button>
+            </div>
           </div>
 
           <div className="border-t pt-6">
