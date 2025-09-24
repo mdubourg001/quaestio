@@ -46,7 +46,7 @@ export default function App() {
           <p className="text-sm text-gray-500 mb-4">
             Example: <code className="bg-gray-100 px-2 py-1 rounded text-xs">?q=[base64-encoded-quiz]</code>
           </p>
-          <div className="text-left bg-gray-50 rounded-lg p-4">
+          <div className="text-left bg-gray-50 rounded-lg p-4 mb-6">
             <h3 className="font-semibold text-gray-800 mb-2">Sample Quiz Format:</h3>
             <pre className="text-xs text-gray-600 overflow-x-auto">
 {`{
@@ -62,6 +62,19 @@ export default function App() {
   ]
 }`}
             </pre>
+          </div>
+
+          <div className="border-t pt-6">
+            <h3 className="font-semibold text-gray-800 mb-3">Want to create your own quiz?</h3>
+            <a
+              href="/editor"
+              className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+            >
+              🛠️ Open Quiz Editor
+            </a>
+            <p className="text-xs text-gray-500 mt-2">
+              Create, edit, and export quizzes with our visual editor
+            </p>
           </div>
         </div>
       </div>
