@@ -130,7 +130,7 @@ export default function EditorApp() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-gray-900">
-                <a href="/">Qaestio</a> - Editor
+                <a href="/">Quaestio</a> - Editor
               </h1>
               {hasUnsavedChanges && (
                 <span className="ml-3 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
