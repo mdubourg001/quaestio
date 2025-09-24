@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Quizz } from '../types';
 import { formatResults } from '../utils/quiz';
+import { Base64 } from '../utils/b64';
 
 interface ResultsProps {
   quiz: Quizz;
@@ -55,7 +56,7 @@ export default function Results({
   };
 
   const openEditor = () => {
-    const encodedQuiz = btoa(JSON.stringify(quiz));
+    const encodedQuiz = Base64.encode(JSON.stringify(quiz));
     const editorUrl = `/editor?import=${encodedQuiz}`;
     window.open(editorUrl, '_blank');
   };

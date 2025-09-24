@@ -1,4 +1,5 @@
 import type { Quizz } from "../types";
+import { Base64 } from "../utils/b64";
 
 interface QuizLandingProps {
   quiz: Quizz;
@@ -6,7 +7,7 @@ interface QuizLandingProps {
 }
 
 const openEditor = (quiz: Quizz) => {
-  const encodedQuiz = btoa(JSON.stringify(quiz));
+  const encodedQuiz = Base64.encode(JSON.stringify(quiz));
   const editorUrl = `/editor?import=${encodedQuiz}`;
   window.open(editorUrl, "_blank");
 };

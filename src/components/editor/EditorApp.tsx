@@ -7,6 +7,7 @@ import {
   clearStoredQuiz,
   validateQuiz,
 } from "../../utils/editor";
+import { Base64 } from "../../utils/b64";
 import QuizConfigEditor from "./QuizConfigEditor";
 import QuestionList from "./QuestionList";
 import ImportExport from "./ImportExport";
@@ -25,7 +26,7 @@ export default function EditorApp() {
 
     if (importData) {
       try {
-        const decoded = atob(importData);
+        const decoded = Base64.decode(importData);
         const importedQuiz = JSON.parse(decoded) as Quizz;
         setQuiz(importedQuiz);
         setHasUnsavedChanges(true);

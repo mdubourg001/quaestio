@@ -50,7 +50,7 @@ export function calculateScore(
 
 export function formatResults(
   quizTitle: string,
-  _totalScore: number,
+  totalScore: number,
   _maxScore: number,
   correctAnswers: number,
   totalQuestions: number
@@ -60,7 +60,8 @@ export function formatResults(
   return `🧠 Quiz Results: ${quizTitle}
 
 📊 Score: ${percentage}%
-✅ Correct answers: ${correctAnswers}/${totalQuestions}`;
+✅ Correct answers: ${correctAnswers}/${totalQuestions}
+🏆 Total Score: ${totalScore} points`;
 }
 
 export function isAnswerCorrect(question: Question, userAnswer: any): boolean {
