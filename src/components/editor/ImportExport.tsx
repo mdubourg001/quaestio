@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Quizz } from "../../types";
 import { encodeQuizToUrl } from "../../utils/quiz";
 import { validateQuiz } from "../../utils/editor";
+import { Base64 } from "../../utils/b64";
 
 interface ImportExportProps {
   quiz: Quizz;
@@ -30,7 +31,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
     }
 
     const jsonData = JSON.stringify(quiz, null, 2);
-    const base64Data = btoa(jsonData);
+    const base64Data = Base64.encode(jsonData);
 
     setJsonExportData(jsonData);
     setExportData(base64Data);
@@ -75,7 +76,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
       if (importFormat === "base64") {
         // Handle base64 format
         try {
-          const decoded = atob(importData.trim());
+          const decoded = Base64.decode(importData.trim());
           importedQuiz = JSON.parse(decoded) as Quizz;
         } catch (decodeErr) {
           setImportError(

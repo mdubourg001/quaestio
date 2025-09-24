@@ -1,4 +1,5 @@
 import type { Quizz, Question } from "../types";
+import { Base64 } from "./b64";
 
 export function decodeQuizFromUrl(): Quizz | null {
   if (typeof window === "undefined") return null;
@@ -9,7 +10,7 @@ export function decodeQuizFromUrl(): Quizz | null {
   if (!encodedQuiz) return null;
 
   try {
-    const decoded = atob(encodedQuiz);
+    const decoded = Base64.decode(encodedQuiz);
     const quiz = JSON.parse(decoded) as Quizz;
     return quiz;
   } catch (error) {
@@ -19,7 +20,7 @@ export function decodeQuizFromUrl(): Quizz | null {
 }
 
 export function encodeQuizToUrl(quiz: Quizz): string {
-  const encoded = btoa(JSON.stringify(quiz));
+  const encoded = Base64.encode(JSON.stringify(quiz));
   return `${window.location.origin}?q=${encoded}`;
 }
 
