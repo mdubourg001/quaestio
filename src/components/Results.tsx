@@ -54,6 +54,12 @@ export default function Results({
     }
   };
 
+  const openEditor = () => {
+    const encodedQuiz = btoa(JSON.stringify(quiz));
+    const editorUrl = `/editor?import=${encodedQuiz}`;
+    window.open(editorUrl, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center p-6">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
@@ -115,6 +121,13 @@ export default function Results({
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
             >
               Take Quiz Again
+            </button>
+
+            <button
+              onClick={openEditor}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+            >
+              🛠️ Edit Quiz
             </button>
 
             <button

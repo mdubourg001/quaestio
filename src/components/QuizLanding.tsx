@@ -1,9 +1,15 @@
-import type { Quizz } from '../types';
+import type { Quizz } from "../types";
 
 interface QuizLandingProps {
   quiz: Quizz;
   onStart: () => void;
 }
+
+const openEditor = (quiz: Quizz) => {
+  const encodedQuiz = btoa(JSON.stringify(quiz));
+  const editorUrl = `/editor?import=${encodedQuiz}`;
+  window.open(editorUrl, "_blank");
+};
 
 export default function QuizLanding({ quiz, onStart }: QuizLandingProps) {
   return (
@@ -51,12 +57,21 @@ export default function QuizLanding({ quiz, onStart }: QuizLandingProps) {
             )}
           </div>
 
-          <button
-            onClick={onStart}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Start Quiz
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={onStart}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Start Quiz
+            </button>
+
+            <button
+              onClick={() => openEditor(quiz)}
+              className="w-full text-purple-700 hover:text-underline font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 text-sm"
+            >
+              Edit in Editor
+            </button>
+          </div>
         </div>
       </div>
     </div>

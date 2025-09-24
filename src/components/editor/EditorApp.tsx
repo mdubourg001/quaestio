@@ -11,8 +11,29 @@ export default function EditorApp() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
 
-  // Load quiz from localStorage on mount
+  // Load quiz from URL import parameter or localStorage on mount
   useEffect(() => {
+    // Check for import parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const importData = urlParams.get('import');
+
+    if (importData) {
+      try {
+        const decoded = atob(importData);
+        const importedQuiz = JSON.parse(decoded) as Quizz;
+        setQuiz(importedQuiz);
+        setHasUnsavedChanges(true);
+        console.log('Imported quiz from URL parameter');
+
+        // Clear the URL parameter after import
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      } catch (error) {
+        console.error('Failed to import quiz from URL:', error);
+      }
+    }
+
+    // Fallback to localStorage
     const savedQuiz = loadQuizFromStorage();
     if (savedQuiz) {
       setQuiz(savedQuiz);
