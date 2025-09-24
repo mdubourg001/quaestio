@@ -15,6 +15,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
   const [showImport, setShowImport] = useState(false);
   const [copied, setCopied] = useState(false);
   const [importError, setImportError] = useState('');
+  const [importFormat, setImportFormat] = useState<'base64' | 'json'>('base64');
 
   const handleExport = () => {
     const validation = validateQuiz(quiz);
@@ -53,13 +54,32 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
     setImportError('');
 
     if (!importData.trim()) {
-      setImportError('Please enter base64 data to import');
+      const formatLabel = importFormat === 'base64' ? 'base64' : 'JSON';
+      setImportError(`Please enter ${formatLabel} data to import`);
       return;
     }
 
     try {
-      const decoded = atob(importData.trim());
-      const importedQuiz = JSON.parse(decoded) as Quizz;
+      let importedQuiz: Quizz;
+
+      if (importFormat === 'base64') {
+        // Handle base64 format
+        try {
+          const decoded = atob(importData.trim());
+          importedQuiz = JSON.parse(decoded) as Quizz;
+        } catch (decodeErr) {
+          setImportError('Failed to decode base64 data. Please check that the data is valid base64-encoded.');
+          return;
+        }
+      } else {
+        // Handle JSON format
+        try {
+          importedQuiz = JSON.parse(importData.trim()) as Quizz;
+        } catch (parseErr) {
+          setImportError('Failed to parse JSON data. Please check that the JSON is valid.');
+          return;
+        }
+      }
 
       const validation = validateQuiz(importedQuiz);
       if (!validation.isValid) {
@@ -72,7 +92,8 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
       setShowImport(false);
       alert('Quiz imported successfully!');
     } catch (err) {
-      setImportError('Failed to import quiz. Please check that the data is valid base64-encoded JSON.');
+      const formatLabel = importFormat === 'base64' ? 'base64-encoded JSON' : 'JSON';
+      setImportError(`Failed to import quiz. Please check that the data is valid ${formatLabel}.`);
     }
   };
 
@@ -184,16 +205,58 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
               <h3 className="text-lg font-bold text-gray-900 mb-4">Import Quiz</h3>
 
               <div className="space-y-4">
+                {/* Format Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Import Format
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="importFormat"
+                        value="base64"
+                        checked={importFormat === 'base64'}
+                        onChange={(e) => {
+                          setImportFormat(e.target.value as 'base64' | 'json');
+                          setImportData('');
+                          setImportError('');
+                        }}
+                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                      />
+                      Base64 Encoded
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="importFormat"
+                        value="json"
+                        checked={importFormat === 'json'}
+                        onChange={(e) => {
+                          setImportFormat(e.target.value as 'base64' | 'json');
+                          setImportData('');
+                          setImportError('');
+                        }}
+                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                      />
+                      Raw JSON
+                    </label>
+                  </div>
+                </div>
+
+                {/* Data Input */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Base64 Encoded Quiz Data
+                    {importFormat === 'base64' ? 'Base64 Encoded Quiz Data' : 'Quiz JSON Data'}
                   </label>
                   <textarea
                     value={importData}
                     onChange={(e) => setImportData(e.target.value)}
                     rows={8}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Paste your base64-encoded quiz data here..."
+                    placeholder={importFormat === 'base64'
+                      ? 'Paste your base64-encoded quiz data here...'
+                      : 'Paste your raw JSON quiz data here...'}
                   />
                   {importError && (
                     <p className="text-red-600 text-sm mt-2 whitespace-pre-line">{importError}</p>
