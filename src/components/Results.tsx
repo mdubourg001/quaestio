@@ -76,9 +76,14 @@ export default function Results({
             <p className="text-xl font-semibold text-gray-800 mb-2">
               {getScoreMessage()}
             </p>
-            <p className="text-gray-600">
-              {correctAnswers} out of {quiz.questions.length} correct answers
-            </p>
+            <div className="space-y-1">
+              <p className="text-gray-600">
+                {correctAnswers} out of {quiz.questions.length} correct answers
+              </p>
+              <p className="text-lg font-semibold text-blue-600">
+                Total Score: {score} points
+              </p>
+            </div>
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
