@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import type { Quizz } from '../../types';
-import { encodeQuizToUrl } from '../../utils/quiz';
-import { validateQuiz } from '../../utils/editor';
+import { useState } from "react";
+import type { Quizz } from "../../types";
+import { encodeQuizToUrl } from "../../utils/quiz";
+import { validateQuiz } from "../../utils/editor";
 
 interface ImportExportProps {
   quiz: Quizz;
@@ -9,20 +9,23 @@ interface ImportExportProps {
 }
 
 export default function ImportExport({ quiz, onImport }: ImportExportProps) {
-  const [exportData, setExportData] = useState('');
-  const [jsonExportData, setJsonExportData] = useState('');
-  const [importData, setImportData] = useState('');
+  const [exportData, setExportData] = useState("");
+  const [jsonExportData, setJsonExportData] = useState("");
+  const [importData, setImportData] = useState("");
   const [showExport, setShowExport] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [importError, setImportError] = useState('');
-  const [importFormat, setImportFormat] = useState<'base64' | 'json'>('base64');
-  const [exportFormat, setExportFormat] = useState<'base64' | 'json'>('base64');
+  const [importError, setImportError] = useState("");
+  const [importFormat, setImportFormat] = useState<"base64" | "json">("base64");
+  const [exportFormat, setExportFormat] = useState<"base64" | "json">("base64");
 
   const handleExport = () => {
     const validation = validateQuiz(quiz);
     if (!validation.isValid) {
-      alert('Please fix the following issues before exporting:\n\n' + validation.errors.join('\n'));
+      alert(
+        "Please fix the following issues before exporting:\n\n" +
+          validation.errors.join("\n")
+      );
       return;
     }
 
@@ -36,12 +39,13 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
 
   const handleCopyExportData = async () => {
     try {
-      const dataToCopy = exportFormat === 'base64' ? exportData : jsonExportData;
+      const dataToCopy =
+        exportFormat === "base64" ? exportData : jsonExportData;
       await navigator.clipboard.writeText(dataToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy to clipboard:', err);
+      console.error("Failed to copy to clipboard:", err);
     }
   };
 
@@ -52,15 +56,15 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy URL:', err);
+      console.error("Failed to copy URL:", err);
     }
   };
 
   const handleImport = () => {
-    setImportError('');
+    setImportError("");
 
     if (!importData.trim()) {
-      const formatLabel = importFormat === 'base64' ? 'base64' : 'JSON';
+      const formatLabel = importFormat === "base64" ? "base64" : "JSON";
       setImportError(`Please enter ${formatLabel} data to import`);
       return;
     }
@@ -68,13 +72,15 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
     try {
       let importedQuiz: Quizz;
 
-      if (importFormat === 'base64') {
+      if (importFormat === "base64") {
         // Handle base64 format
         try {
           const decoded = atob(importData.trim());
           importedQuiz = JSON.parse(decoded) as Quizz;
         } catch (decodeErr) {
-          setImportError('Failed to decode base64 data. Please check that the data is valid base64-encoded.');
+          setImportError(
+            "Failed to decode base64 data. Please check that the data is valid base64-encoded."
+          );
           return;
         }
       } else {
@@ -82,60 +88,68 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
         try {
           importedQuiz = JSON.parse(importData.trim()) as Quizz;
         } catch (parseErr) {
-          setImportError('Failed to parse JSON data. Please check that the JSON is valid.');
+          setImportError(
+            "Failed to parse JSON data. Please check that the JSON is valid."
+          );
           return;
         }
       }
 
       const validation = validateQuiz(importedQuiz);
       if (!validation.isValid) {
-        setImportError('Invalid quiz data:\n' + validation.errors.join('\n'));
+        setImportError("Invalid quiz data:\n" + validation.errors.join("\n"));
         return;
       }
 
       onImport(importedQuiz);
-      setImportData('');
+      setImportData("");
       setShowImport(false);
-      alert('Quiz imported successfully!');
+      alert("Quiz imported successfully!");
     } catch (err) {
-      const formatLabel = importFormat === 'base64' ? 'base64-encoded JSON' : 'JSON';
-      setImportError(`Failed to import quiz. Please check that the data is valid ${formatLabel}.`);
+      const formatLabel =
+        importFormat === "base64" ? "base64-encoded JSON" : "JSON";
+      setImportError(
+        `Failed to import quiz. Please check that the data is valid ${formatLabel}.`
+      );
     }
   };
 
   const generatePreviewUrl = () => {
     const validation = validateQuiz(quiz);
     if (!validation.isValid) {
-      alert('Please fix the following issues before previewing:\n\n' + validation.errors.join('\n'));
+      alert(
+        "Please fix the following issues before previewing:\n\n" +
+          validation.errors.join("\n")
+      );
       return;
     }
 
     const quizUrl = encodeQuizToUrl(quiz);
-    window.open(quizUrl, '_blank');
+    window.open(quizUrl, "_blank");
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-xl font-bold text-gray-900 mb-4">Import & Export</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex gap-4">
         <button
           onClick={handleExport}
-          className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           📤 Export Quiz
         </button>
 
         <button
           onClick={() => setShowImport(true)}
-          className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
           📥 Import Quiz
         </button>
 
         <button
           onClick={generatePreviewUrl}
-          className="px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
         >
           👀 Preview Quiz
         </button>
@@ -146,7 +160,9 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
             <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Export Quiz</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">
+                Export Quiz
+              </h3>
 
               <div className="space-y-4">
                 {/* Export Format Selection */}
@@ -160,8 +176,10 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         type="radio"
                         name="exportFormat"
                         value="base64"
-                        checked={exportFormat === 'base64'}
-                        onChange={(e) => setExportFormat(e.target.value as 'base64' | 'json')}
+                        checked={exportFormat === "base64"}
+                        onChange={(e) =>
+                          setExportFormat(e.target.value as "base64" | "json")
+                        }
                         className="mr-2 text-blue-600 focus:ring-blue-500"
                       />
                       Base64 Encoded
@@ -171,8 +189,10 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         type="radio"
                         name="exportFormat"
                         value="json"
-                        checked={exportFormat === 'json'}
-                        onChange={(e) => setExportFormat(e.target.value as 'base64' | 'json')}
+                        checked={exportFormat === "json"}
+                        onChange={(e) =>
+                          setExportFormat(e.target.value as "base64" | "json")
+                        }
                         className="mr-2 text-blue-600 focus:ring-blue-500"
                       />
                       Raw JSON
@@ -183,10 +203,14 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 {/* Export Data Display */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {exportFormat === 'base64' ? 'Base64 Encoded Data' : 'Quiz JSON Data'}
+                    {exportFormat === "base64"
+                      ? "Base64 Encoded Data"
+                      : "Quiz JSON Data"}
                   </label>
                   <textarea
-                    value={exportFormat === 'base64' ? exportData : jsonExportData}
+                    value={
+                      exportFormat === "base64" ? exportData : jsonExportData
+                    }
                     readOnly
                     rows={8}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 font-mono text-sm"
@@ -196,7 +220,11 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                       onClick={handleCopyExportData}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
                     >
-                      {copied ? '✓ Copied!' : `📋 Copy ${exportFormat === 'base64' ? 'Base64' : 'JSON'}`}
+                      {copied
+                        ? "✓ Copied!"
+                        : `📋 Copy ${
+                            exportFormat === "base64" ? "Base64" : "JSON"
+                          }`}
                     </button>
                   </div>
                 </div>
@@ -216,7 +244,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                       onClick={handleCopyUrl}
                       className="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors"
                     >
-                      {copied ? '✓' : '📋'}
+                      {copied ? "✓" : "📋"}
                     </button>
                   </div>
                 </div>
@@ -240,7 +268,9 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
             <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Import Quiz</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">
+                Import Quiz
+              </h3>
 
               <div className="space-y-4">
                 {/* Format Selection */}
@@ -254,11 +284,11 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         type="radio"
                         name="importFormat"
                         value="base64"
-                        checked={importFormat === 'base64'}
+                        checked={importFormat === "base64"}
                         onChange={(e) => {
-                          setImportFormat(e.target.value as 'base64' | 'json');
-                          setImportData('');
-                          setImportError('');
+                          setImportFormat(e.target.value as "base64" | "json");
+                          setImportData("");
+                          setImportError("");
                         }}
                         className="mr-2 text-blue-600 focus:ring-blue-500"
                       />
@@ -269,11 +299,11 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         type="radio"
                         name="importFormat"
                         value="json"
-                        checked={importFormat === 'json'}
+                        checked={importFormat === "json"}
                         onChange={(e) => {
-                          setImportFormat(e.target.value as 'base64' | 'json');
-                          setImportData('');
-                          setImportError('');
+                          setImportFormat(e.target.value as "base64" | "json");
+                          setImportData("");
+                          setImportError("");
                         }}
                         className="mr-2 text-blue-600 focus:ring-blue-500"
                       />
@@ -285,25 +315,33 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 {/* Data Input */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {importFormat === 'base64' ? 'Base64 Encoded Quiz Data' : 'Quiz JSON Data'}
+                    {importFormat === "base64"
+                      ? "Base64 Encoded Quiz Data"
+                      : "Quiz JSON Data"}
                   </label>
                   <textarea
                     value={importData}
                     onChange={(e) => setImportData(e.target.value)}
                     rows={8}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder={importFormat === 'base64'
-                      ? 'Paste your base64-encoded quiz data here...'
-                      : 'Paste your raw JSON quiz data here...'}
+                    placeholder={
+                      importFormat === "base64"
+                        ? "Paste your base64-encoded quiz data here..."
+                        : "Paste your raw JSON quiz data here..."
+                    }
                   />
                   {importError && (
-                    <p className="text-red-600 text-sm mt-2 whitespace-pre-line">{importError}</p>
+                    <p className="text-red-600 text-sm mt-2 whitespace-pre-line">
+                      {importError}
+                    </p>
                   )}
                 </div>
 
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                   <p className="text-sm text-yellow-800">
-                    <strong>Warning:</strong> Importing will replace your current quiz. Make sure to export your current work first if you want to keep it.
+                    <strong>Warning:</strong> Importing will replace your
+                    current quiz. Make sure to export your current work first if
+                    you want to keep it.
                   </p>
                 </div>
               </div>
@@ -312,8 +350,8 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 <button
                   onClick={() => {
                     setShowImport(false);
-                    setImportData('');
-                    setImportError('');
+                    setImportData("");
+                    setImportError("");
                   }}
                   className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >

@@ -1,1 +1,1 @@
-# Quaestio - The Offline Quiz Application
+# Quaestio - The client-side only quiz app

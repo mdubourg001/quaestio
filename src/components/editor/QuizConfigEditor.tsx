@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
-import type { Quizz } from '../../types';
+import { useState, useEffect } from "react";
+import type { Quizz } from "../../types";
 
 interface QuizConfigEditorProps {
   quiz: Quizz;
   onUpdate: (quiz: Quizz) => void;
 }
 
-export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorProps) {
+export default function QuizConfigEditor({
+  quiz,
+  onUpdate,
+}: QuizConfigEditorProps) {
   const [formData, setFormData] = useState(quiz);
 
   // Sync formData with quiz prop when it changes
@@ -22,7 +25,9 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Quiz Configuration</h2>
+      <h2 className="text-xl font-bold text-gray-900 mb-4">
+        Quiz Configuration
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -32,7 +37,7 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
           <input
             type="text"
             value={formData.title}
-            onChange={(e) => handleChange('title', e.target.value)}
+            onChange={(e) => handleChange("title", e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Enter quiz title"
             required
@@ -45,8 +50,8 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
           </label>
           <input
             type="url"
-            value={formData.thumbnail || ''}
-            onChange={(e) => handleChange('thumbnail', e.target.value)}
+            value={formData.thumbnail || ""}
+            onChange={(e) => handleChange("thumbnail", e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="https://example.com/image.jpg"
           />
@@ -57,8 +62,8 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
             Description
           </label>
           <textarea
-            value={formData.description || ''}
-            onChange={(e) => handleChange('description', e.target.value)}
+            value={formData.description || ""}
+            onChange={(e) => handleChange("description", e.target.value)}
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Brief description of your quiz"
@@ -73,8 +78,13 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
             type="number"
             min="5"
             max="300"
-            value={formData.duration || ''}
-            onChange={(e) => handleChange('duration', e.target.value ? parseInt(e.target.value) : undefined)}
+            value={formData.duration || ""}
+            onChange={(e) =>
+              handleChange(
+                "duration",
+                e.target.value ? parseInt(e.target.value) : undefined
+              )
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="30"
           />
@@ -83,22 +93,26 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
           </p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Response Time Multiplier
-          </label>
-          <input
-            type="number"
-            min="0"
-            max="5"
-            step="0.1"
-            value={formData.responseTimeMultiplier || ''}
-            onChange={(e) => handleChange('responseTimeMultiplier', e.target.value ? parseFloat(e.target.value) : undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="1.0"
-          />
+        <div className="flex flex-col justify-center">
+          <div className="flex">
+            <input
+              type="checkbox"
+              id="responseTimeBonus"
+              checked={formData.responseTimeMultiplier === 2}
+              onChange={(e) =>
+                handleChange("responseTimeMultiplier", e.target.checked ? 2 : 1)
+              }
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label
+              htmlFor="responseTimeBonus"
+              className="ml-2 block text-sm font-medium text-gray-700"
+            >
+              Enable Response Time Bonus
+            </label>
+          </div>
           <p className="text-xs text-gray-500 mt-1">
-            Higher values reward faster responses more
+            When enabled, faster responses earn more points
           </p>
         </div>
       </div>
@@ -115,7 +129,7 @@ export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorPro
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
+                target.style.display = "none";
               }}
             />
           </div>
