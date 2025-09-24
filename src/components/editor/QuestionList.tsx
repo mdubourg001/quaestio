@@ -1,37 +1,49 @@
-import { useState } from 'react';
-import type { Question } from '../../types';
-import QuestionEditor from './QuestionEditor';
-import { createEmptyQuestion, duplicateQuestion } from '../../utils/editor';
+import { useState } from "react";
+import type { Question } from "../../types";
+import QuestionEditor from "./QuestionEditor";
+import { createEmptyQuestion, duplicateQuestion } from "../../utils/editor";
 
 interface QuestionListProps {
   questions: Question[];
   onQuestionsChange: (questions: Question[]) => void;
 }
 
-export default function QuestionList({ questions, onQuestionsChange }: QuestionListProps) {
+export default function QuestionList({
+  questions,
+  onQuestionsChange,
+}: QuestionListProps) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
-  const getQuestionTypeIcon = (type: Question['type']) => {
+  const getQuestionTypeIcon = (type: Question["type"]) => {
     switch (type) {
-      case 'true-false': return '✓/✗';
-      case 'single-choice': return '○';
-      case 'multiple-choice': return '☑';
+      case "true-false":
+        return "✓/✗";
+      case "single-choice":
+        return "○";
+      case "multiple-choice":
+        return "☑";
     }
   };
 
-  const getQuestionTypeName = (type: Question['type']) => {
+  const getQuestionTypeName = (type: Question["type"]) => {
     switch (type) {
-      case 'true-false': return 'True/False';
-      case 'single-choice': return 'Single Choice';
-      case 'multiple-choice': return 'Multiple Choice';
+      case "true-false":
+        return "True/False";
+      case "single-choice":
+        return "Single Choice";
+      case "multiple-choice":
+        return "Multiple Choice";
     }
   };
 
   const handleMoveUp = (index: number) => {
     if (index > 0) {
       const newQuestions = [...questions];
-      [newQuestions[index - 1], newQuestions[index]] = [newQuestions[index], newQuestions[index - 1]];
+      [newQuestions[index - 1], newQuestions[index]] = [
+        newQuestions[index],
+        newQuestions[index - 1],
+      ];
       onQuestionsChange(newQuestions);
     }
   };
@@ -39,13 +51,16 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
   const handleMoveDown = (index: number) => {
     if (index < questions.length - 1) {
       const newQuestions = [...questions];
-      [newQuestions[index], newQuestions[index + 1]] = [newQuestions[index + 1], newQuestions[index]];
+      [newQuestions[index], newQuestions[index + 1]] = [
+        newQuestions[index + 1],
+        newQuestions[index],
+      ];
       onQuestionsChange(newQuestions);
     }
   };
 
   const handleDelete = (index: number) => {
-    if (confirm('Are you sure you want to delete this question?')) {
+    if (confirm("Are you sure you want to delete this question?")) {
       const newQuestions = questions.filter((_, i) => i !== index);
       onQuestionsChange(newQuestions);
     }
@@ -91,13 +106,15 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-900">Questions ({questions.length})</h2>
+        <h2 className="text-xl font-bold text-gray-900">
+          Questions ({questions.length})
+        </h2>
         <button
           onClick={handleAddNew}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -131,7 +148,8 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
                       {index + 1}
                     </span>
                     <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mr-2">
-                      {getQuestionTypeIcon(question.type)} {getQuestionTypeName(question.type)}
+                      {getQuestionTypeIcon(question.type)}{" "}
+                      {getQuestionTypeName(question.type)}
                     </span>
                     {question.points && (
                       <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded mr-2">
@@ -145,20 +163,25 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
                     )}
                   </div>
                   <h3 className="font-medium text-gray-900 mb-1">
-                    {truncateText(question.statement || 'Untitled Question', 80)}
+                    {truncateText(
+                      question.statement || "Untitled Question",
+                      80
+                    )}
                   </h3>
                   {question.image && (
-                    <div className="text-sm text-blue-600 mb-1">📷 Has image</div>
+                    <div className="text-sm text-blue-600 mb-1">
+                      📷 Has image
+                    </div>
                   )}
                 </div>
 
                 <div className="flex items-center space-x-1 ml-4">
                   {/* Reorder buttons */}
-                  <div className="flex flex-col space-y-1">
+                  <div className="flex flex-col">
                     <button
                       onClick={() => handleMoveUp(index)}
                       disabled={index === 0}
-                      className="px-2 py-1 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Move up"
                     >
                       ▲
@@ -166,7 +189,7 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
                     <button
                       onClick={() => handleMoveDown(index)}
                       disabled={index === questions.length - 1}
-                      className="px-2 py-1 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Move down"
                     >
                       ▼
@@ -214,7 +237,7 @@ export default function QuestionList({ questions, onQuestionsChange }: QuestionL
       {/* Add New Question Modal */}
       {isAddingNew && (
         <QuestionEditor
-          question={createEmptyQuestion('true-false')}
+          question={createEmptyQuestion("true-false")}
           onUpdate={handleAddNewQuestion}
           onCancel={handleCancel}
         />

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import type { Quizz } from '../../types';
-import { encodeQuizToUrl } from '../../utils/quiz';
-import { validateQuiz } from '../../utils/editor';
+import { useState } from "react";
+import type { Quizz } from "../../types";
+import { encodeQuizToUrl } from "../../utils/quiz";
+import { validateQuiz } from "../../utils/editor";
 
 interface QRCodeGeneratorProps {
   quiz: Quizz;
@@ -9,51 +9,100 @@ interface QRCodeGeneratorProps {
 
 export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
   const [showQRCode, setShowQRCode] = useState(false);
-  const [qrCodeUrl, setQRCodeUrl] = useState('');
+  const [qrCodeUrl, setQRCodeUrl] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const generateQRCode = () => {
     const validation = validateQuiz(quiz);
     if (!validation.isValid) {
-      alert('Please fix the following issues before generating QR code:\n\n' + validation.errors.join('\n'));
+      alert(
+        "Please fix the following issues before generating QR code:\n\n" +
+          validation.errors.join("\n")
+      );
       return;
     }
 
     const quizUrl = encodeQuizToUrl(quiz);
 
     // Using QR Server API (free service)
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(quizUrl)}`;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      quizUrl
+    )}`;
 
     setQRCodeUrl(qrApiUrl);
     setShowQRCode(true);
   };
 
   const downloadQRCode = () => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = qrCodeUrl;
-    link.download = `${quiz.title.replace(/[^a-zA-Z0-9]/g, '_')}_qr.png`;
+    link.download = `${quiz.title.replace(/[^a-zA-Z0-9]/g, "_")}_qr.png`;
     link.click();
+  };
+
+  const copyUrl = async () => {
+    const validation = validateQuiz(quiz);
+    if (!validation.isValid) {
+      alert(
+        "Please fix the following issues before copying URL:\n\n" +
+          validation.errors.join("\n")
+      );
+      return;
+    }
+
+    const quizUrl = encodeQuizToUrl(quiz);
+
+    try {
+      await navigator.clipboard.writeText(quizUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+      alert('Failed to copy URL to clipboard');
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">QR Code Generator</h2>
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Share</h2>
 
       <p className="text-gray-600 mb-4">
-        Generate a QR code for easy sharing of your quiz. Users can scan the code to instantly access your quiz.
+        Generate a QR code for easy sharing of your quiz. Users can scan the
+        code to instantly access your quiz.
       </p>
 
-      <button
-        onClick={generateQRCode}
-        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-      >
-        🔲 Generate QR Code
-      </button>
+      <div className="flex gap-3">
+        <button
+          onClick={generateQRCode}
+          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+        >
+          🔲 Generate QR Code
+        </button>
+
+        <button
+          onClick={copyUrl}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          {copied ? (
+            <>
+              <span className="mr-2">✓</span>
+              Copied!
+            </>
+          ) : (
+            <>
+              📋 Copy URL
+            </>
+          )}
+        </button>
+      </div>
 
       {showQRCode && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6 text-center">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">QR Code for "{quiz.title}"</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">
+                QR Code for "{quiz.title}"
+              </h3>
 
               <div className="mb-4">
                 <img
