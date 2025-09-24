@@ -15,14 +15,29 @@ export default function QuestionEditor({ question, onUpdate, onCancel }: Questio
   const handleTypeChange = (newType: Question['type']) => {
     if (newType === formData.type) return;
 
-    const newQuestion = createEmptyQuestion(newType);
-    setFormData({
-      ...newQuestion,
-      statement: formData.statement,
-      image: formData.image,
-      points: formData.points,
-      duration: formData.duration,
-    });
+    // Check if we're switching between single-choice and multiple-choice
+    const oldHasOptions = formData.type === 'single-choice' || formData.type === 'multiple-choice';
+    const newHasOptions = newType === 'single-choice' || newType === 'multiple-choice';
+
+    if (oldHasOptions && newHasOptions) {
+      // Preserve options when switching between choice types
+      const newAnswer = newType === 'single-choice' ? 0 : [0];
+      setFormData({
+        ...formData,
+        type: newType,
+        answer: newAnswer,
+      });
+    } else {
+      // Use default behavior for other type changes
+      const newQuestion = createEmptyQuestion(newType);
+      setFormData({
+        ...newQuestion,
+        statement: formData.statement,
+        image: formData.image,
+        points: formData.points,
+        duration: formData.duration,
+      });
+    }
   };
 
   const handleBasicChange = (field: keyof Omit<Question, 'type' | 'answer' | 'options'>, value: any) => {
