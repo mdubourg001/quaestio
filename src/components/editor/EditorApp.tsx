@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
-import type { Quizz } from '../../types';
-import { createEmptyQuiz, saveQuizToStorage, loadQuizFromStorage, clearStoredQuiz, validateQuiz } from '../../utils/editor';
-import QuizConfigEditor from './QuizConfigEditor';
-import QuestionList from './QuestionList';
-import ImportExport from './ImportExport';
-import QRCodeGenerator from './QRCodeGenerator';
+import { useState, useEffect } from "react";
+import type { Quizz } from "../../types";
+import {
+  createEmptyQuiz,
+  saveQuizToStorage,
+  loadQuizFromStorage,
+  clearStoredQuiz,
+  validateQuiz,
+} from "../../utils/editor";
+import QuizConfigEditor from "./QuizConfigEditor";
+import QuestionList from "./QuestionList";
+import ImportExport from "./ImportExport";
+import QRCodeGenerator from "./QRCodeGenerator";
 
 export default function EditorApp() {
   const [quiz, setQuiz] = useState<Quizz>(createEmptyQuiz());
@@ -15,7 +21,7 @@ export default function EditorApp() {
   useEffect(() => {
     // Check for import parameter in URL
     const urlParams = new URLSearchParams(window.location.search);
-    const importData = urlParams.get('import');
+    const importData = urlParams.get("import");
 
     if (importData) {
       try {
@@ -23,13 +29,17 @@ export default function EditorApp() {
         const importedQuiz = JSON.parse(decoded) as Quizz;
         setQuiz(importedQuiz);
         setHasUnsavedChanges(true);
-        console.log('Imported quiz from URL parameter');
+        console.log("Imported quiz from URL parameter");
 
         // Clear the URL parameter after import
-        window.history.replaceState({}, document.title, window.location.pathname);
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
         return;
       } catch (error) {
-        console.error('Failed to import quiz from URL:', error);
+        console.error("Failed to import quiz from URL:", error);
       }
     }
 
@@ -37,7 +47,7 @@ export default function EditorApp() {
     const savedQuiz = loadQuizFromStorage();
     if (savedQuiz) {
       setQuiz(savedQuiz);
-      console.log('Loaded quiz from localStorage');
+      console.log("Loaded quiz from localStorage");
     }
   }, []);
 
@@ -47,7 +57,7 @@ export default function EditorApp() {
       const timeoutId = setTimeout(() => {
         saveQuizToStorage(quiz);
         setHasUnsavedChanges(false);
-        console.log('Auto-saved quiz to localStorage');
+        console.log("Auto-saved quiz to localStorage");
       }, 2000); // Auto-save after 2 seconds of inactivity
 
       return () => clearTimeout(timeoutId);
@@ -59,12 +69,12 @@ export default function EditorApp() {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue = '';
+        e.returnValue = "";
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
   const handleQuizUpdate = (updatedQuiz: Quizz) => {
@@ -86,12 +96,16 @@ export default function EditorApp() {
   const handleSaveManually = () => {
     saveQuizToStorage(quiz);
     setHasUnsavedChanges(false);
-    alert('Quiz saved to local storage!');
+    alert("Quiz saved to local storage!");
   };
 
   const handleNewQuiz = () => {
     if (hasUnsavedChanges) {
-      if (!confirm('You have unsaved changes. Creating a new quiz will lose your current work. Continue?')) {
+      if (
+        !confirm(
+          "You have unsaved changes. Creating a new quiz will lose your current work. Continue?"
+        )
+      ) {
         return;
       }
     }
@@ -115,7 +129,9 @@ export default function EditorApp() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">Quiz Editor</h1>
+              <h1 className="text-xl font-bold text-gray-900">
+                <a href="/">Qaestio</a> - Editor
+              </h1>
               {hasUnsavedChanges && (
                 <span className="ml-3 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
                   Unsaved changes
@@ -166,7 +182,9 @@ export default function EditorApp() {
         {/* Validation Status */}
         {!validationStatus.isValid && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <h3 className="text-red-800 font-semibold mb-2">⚠️ Validation Issues</h3>
+            <h3 className="text-red-800 font-semibold mb-2">
+              ⚠️ Validation Issues
+            </h3>
             <ul className="text-red-700 text-sm space-y-1">
               {validationStatus.errors.map((error, index) => (
                 <li key={index}>• {error}</li>
@@ -177,10 +195,7 @@ export default function EditorApp() {
 
         <div className="space-y-8">
           {/* Quiz Configuration */}
-          <QuizConfigEditor
-            quiz={quiz}
-            onUpdate={handleQuizUpdate}
-          />
+          <QuizConfigEditor quiz={quiz} onUpdate={handleQuizUpdate} />
 
           {/* Questions Management */}
           <QuestionList
@@ -190,10 +205,7 @@ export default function EditorApp() {
 
           {/* Import/Export and QR Code */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ImportExport
-              quiz={quiz}
-              onImport={handleImport}
-            />
+            <ImportExport quiz={quiz} onImport={handleImport} />
 
             <QRCodeGenerator quiz={quiz} />
           </div>
@@ -205,8 +217,11 @@ export default function EditorApp() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center text-sm text-gray-600">
             <div>
-              Quiz: "{quiz.title}" • {quiz.questions.length} question{quiz.questions.length !== 1 ? 's' : ''}
-              {validationStatus.isValid && <span className="text-green-600 ml-2">✓ Valid</span>}
+              Quiz: "{quiz.title}" • {quiz.questions.length} question
+              {quiz.questions.length !== 1 ? "s" : ""}
+              {validationStatus.isValid && (
+                <span className="text-green-600 ml-2">✓ Valid</span>
+              )}
             </div>
             <div>
               {autoSaveEnabled ? (

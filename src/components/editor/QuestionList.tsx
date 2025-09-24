@@ -141,7 +141,7 @@ export default function QuestionList({
               key={index}
               className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center mb-2">
                     <span className="text-sm bg-gray-100 px-2 py-1 rounded mr-2">
@@ -175,9 +175,9 @@ export default function QuestionList({
                   )}
                 </div>
 
-                <div className="flex items-center space-x-1 ml-4">
+                <div className="flex items-center ml-4">
                   {/* Reorder buttons */}
-                  <div className="flex flex-col">
+                  <div className="flex">
                     <button
                       onClick={() => handleMoveUp(index)}
                       disabled={index === 0}
@@ -199,21 +199,21 @@ export default function QuestionList({
                   {/* Action buttons */}
                   <button
                     onClick={() => handleEdit(index)}
-                    className="px-3 py-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                    className="px-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                     title="Edit"
                   >
                     ✏️
                   </button>
                   <button
                     onClick={() => handleDuplicate(index)}
-                    className="px-3 py-2 text-green-600 hover:bg-green-50 rounded transition-colors"
+                    className="px-2 text-green-600 hover:bg-green-50 rounded transition-colors"
                     title="Duplicate"
                   >
                     📋
                   </button>
                   <button
                     onClick={() => handleDelete(index)}
-                    className="px-3 py-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                    className="px-2 text-red-600 hover:bg-red-50 rounded transition-colors"
                     title="Delete"
                   >
                     🗑️
