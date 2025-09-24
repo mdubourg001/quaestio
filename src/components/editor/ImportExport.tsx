@@ -10,12 +10,14 @@ interface ImportExportProps {
 
 export default function ImportExport({ quiz, onImport }: ImportExportProps) {
   const [exportData, setExportData] = useState('');
+  const [jsonExportData, setJsonExportData] = useState('');
   const [importData, setImportData] = useState('');
   const [showExport, setShowExport] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [copied, setCopied] = useState(false);
   const [importError, setImportError] = useState('');
   const [importFormat, setImportFormat] = useState<'base64' | 'json'>('base64');
+  const [exportFormat, setExportFormat] = useState<'base64' | 'json'>('base64');
 
   const handleExport = () => {
     const validation = validateQuiz(quiz);
@@ -24,14 +26,18 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
       return;
     }
 
-    const base64Data = btoa(JSON.stringify(quiz, null, 2));
+    const jsonData = JSON.stringify(quiz, null, 2);
+    const base64Data = btoa(jsonData);
+
+    setJsonExportData(jsonData);
     setExportData(base64Data);
     setShowExport(true);
   };
 
-  const handleCopyBase64 = async () => {
+  const handleCopyExportData = async () => {
     try {
-      await navigator.clipboard.writeText(exportData);
+      const dataToCopy = exportFormat === 'base64' ? exportData : jsonExportData;
+      await navigator.clipboard.writeText(dataToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -143,22 +149,54 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
               <h3 className="text-lg font-bold text-gray-900 mb-4">Export Quiz</h3>
 
               <div className="space-y-4">
+                {/* Export Format Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Export Format
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="exportFormat"
+                        value="base64"
+                        checked={exportFormat === 'base64'}
+                        onChange={(e) => setExportFormat(e.target.value as 'base64' | 'json')}
+                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                      />
+                      Base64 Encoded
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="exportFormat"
+                        value="json"
+                        checked={exportFormat === 'json'}
+                        onChange={(e) => setExportFormat(e.target.value as 'base64' | 'json')}
+                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                      />
+                      Raw JSON
+                    </label>
+                  </div>
+                </div>
+
+                {/* Export Data Display */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Base64 Encoded Data
+                    {exportFormat === 'base64' ? 'Base64 Encoded Data' : 'Quiz JSON Data'}
                   </label>
                   <textarea
-                    value={exportData}
+                    value={exportFormat === 'base64' ? exportData : jsonExportData}
                     readOnly
                     rows={8}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 font-mono text-sm"
                   />
                   <div className="flex space-x-2 mt-2">
                     <button
-                      onClick={handleCopyBase64}
+                      onClick={handleCopyExportData}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
                     >
-                      {copied ? '✓ Copied!' : '📋 Copy Base64'}
+                      {copied ? '✓ Copied!' : `📋 Copy ${exportFormat === 'base64' ? 'Base64' : 'JSON'}`}
                     </button>
                   </div>
                 </div>
