@@ -17,8 +17,13 @@ export function decodeQuizFromUrl(): Quizz | null {
       const decompressed =
         LZString.decompressFromEncodedURIComponent(compressedQuiz);
       if (decompressed) {
-        const quiz = JSON.parse(decompressed) as Quizz;
-        return quiz;
+        const parsed = JSON.parse(decompressed);
+        // Check if it's the new compact format or legacy format
+        if (parsed.q && Array.isArray(parsed.q)) {
+          return expandCompactQuiz(parsed);
+        } else {
+          return parsed as Quizz;
+        }
       }
     }
 
@@ -36,39 +41,81 @@ export function decodeQuizFromUrl(): Quizz | null {
   }
 }
 
-function optimizeQuizForEncoding(quiz: Quizz): Quizz {
-  // Create a copy and remove empty/default values to reduce size
-  const optimized: any = structuredClone(quiz);
+function expandCompactQuiz(compact: any): Quizz {
+  const quiz: any = {};
 
-  for (const key in optimized) {
-    if (optimized[key] === null || optimized[key] === undefined) {
-      delete optimized[key];
-    }
-  }
+  // Expand quiz-level fields
+  if (compact.t) quiz.title = compact.t;
+  if (compact.desc) quiz.description = compact.desc;
+  if (compact.thumb) quiz.thumbnail = compact.thumb;
+  if (compact.d) quiz.duration = compact.d;
+  if (compact.rtm) quiz.responseTimeMultiplier = compact.rtm;
 
-  // Optimize questions
-  optimized.questions = quiz.questions.map((question) => {
-    const opt: any = { ...question };
+  // Expand questions
+  quiz.questions = compact.q.map((q: any) => {
+    const question: any = {};
 
-    for (const key in opt) {
-      if (
-        opt[key] === null ||
-        opt[key] === undefined ||
-        (Array.isArray(opt[key]) && opt[key].length === 0) ||
-        (typeof opt[key] === "object" &&
-          !Array.isArray(opt[key]) &&
-          Object.keys(opt[key]).length === 0) ||
-        (key === "points" && opt[key] === 100) || // Default points
-        (key === "duration" && opt[key] === 30) // Default duration
-      ) {
-        delete opt[key];
-      }
-    }
+    // Expand required fields
+    question.statement = q.s; // s -> statement
 
-    return opt;
+    // Expand type abbreviations
+    if (q.y === "tf") question.type = "true-false";
+    else if (q.y === "sc") question.type = "single-choice";
+    else if (q.y === "mc") question.type = "multiple-choice";
+
+    question.answer = q.a; // a -> answer
+
+    // Expand optional fields
+    if (q.o) question.options = q.o; // o -> options
+    if (q.i) question.image = q.i; // i -> image
+    if (q.p) question.points = q.p; // p -> points
+    if (q.dur) question.duration = q.dur; // dur -> duration
+
+    return question;
   });
 
-  return optimized as Quizz;
+  return quiz as Quizz;
+}
+
+function optimizeQuizForEncoding(quiz: Quizz): any {
+  const compact: any = {};
+
+  // Compact field mappings for quiz
+  if (quiz.title) compact.t = quiz.title;
+  if (quiz.description?.trim()) compact.desc = quiz.description.trim();
+  if (quiz.thumbnail?.trim()) compact.thumb = quiz.thumbnail.trim();
+  if (quiz.duration) compact.d = quiz.duration;
+  if (quiz.responseTimeMultiplier && quiz.responseTimeMultiplier !== 1) {
+    compact.rtm = quiz.responseTimeMultiplier;
+  }
+
+  // Compact questions with abbreviated field names and types
+  compact.q = quiz.questions.map((question) => {
+    const q: any = {};
+
+    // Required fields with compact names
+    q.s = question.statement.trim(); // statement -> s
+
+    // Type abbreviations
+    if (question.type === "true-false") q.y = "tf";
+    else if (question.type === "single-choice") q.y = "sc";
+    else if (question.type === "multiple-choice") q.y = "mc";
+
+    // Answer with compact name
+    q.a = question.answer; // answer -> a
+
+    // Optional fields only if non-default
+    if (question.type !== "true-false" && question.options) {
+      q.o = question.options; // options -> o
+    }
+    if (question.image?.trim()) q.i = question.image.trim(); // image -> i
+    if (question.points && question.points !== 100) q.p = question.points; // points -> p
+    if (question.duration) q.dur = question.duration; // duration -> dur
+
+    return q;
+  });
+
+  return compact;
 }
 
 export function encodeQuizToUrl(quiz: Quizz): string {
