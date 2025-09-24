@@ -1,4 +1,5 @@
 import { useState } from "react";
+import QRCode from "qrcode";
 import type { Quizz } from "../../types";
 import { encodeQuizToUrl } from "../../utils/quiz";
 import { validateQuiz } from "../../utils/editor";
@@ -10,9 +11,10 @@ interface QRCodeGeneratorProps {
 export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
   const [showQRCode, setShowQRCode] = useState(false);
   const [qrCodeUrl, setQRCodeUrl] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const generateQRCode = () => {
+  const generateQRCode = async () => {
     const validation = validateQuiz(quiz);
     if (!validation.isValid) {
       alert(
@@ -22,15 +24,56 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
       return;
     }
 
-    const quizUrl = encodeQuizToUrl(quiz);
+    setIsGenerating(true);
 
-    // Using QR Server API (free service)
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-      quizUrl
-    )}`;
+    try {
+      const quizUrl = encodeQuizToUrl(quiz);
+      console.log(quizUrl.length);
 
-    setQRCodeUrl(qrApiUrl);
-    setShowQRCode(true);
+      // Check if URL is too long for QR codes (QR codes can handle up to ~4KB but we're conservative)
+      if (quizUrl.length > 3000) {
+        alert(
+          "This quiz is too large to encode in a QR code. Please consider:\n\n" +
+            "• Reducing the number of questions\n" +
+            "• Shortening question text and options\n" +
+            "• Removing optional fields like images or descriptions\n\n" +
+            "You can still copy and share the URL directly using the 'Copy URL' button."
+        );
+        setIsGenerating(false);
+        return;
+      }
+
+      // Generate QR code client-side as data URL
+      const qrDataUrl = await QRCode.toDataURL(quizUrl, {
+        // width: 300,
+        margin: 2,
+        color: {
+          dark: "#000000",
+          light: "#FFFFFF",
+        },
+        errorCorrectionLevel: "M",
+      });
+
+      setQRCodeUrl(qrDataUrl);
+      setShowQRCode(true);
+    } catch (error) {
+      console.error("Failed to generate QR code:", error);
+
+      // Check if it's specifically a data size error
+      if (error instanceof Error && error.message.includes("too big")) {
+        alert(
+          "This quiz contains too much data for a QR code. Please try:\n\n" +
+            "• Reducing the number of questions\n" +
+            "• Shortening question text and answer options\n" +
+            "• Removing images or long descriptions\n\n" +
+            "You can still share the quiz by copying the URL directly."
+        );
+      } else {
+        alert("Failed to generate QR code. Please try again.");
+      }
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const downloadQRCode = () => {
@@ -57,8 +100,8 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy URL:', err);
-      alert('Failed to copy URL to clipboard');
+      console.error("Failed to copy URL:", err);
+      alert("Failed to copy URL to clipboard");
     }
   };
 
@@ -74,9 +117,10 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
       <div className="flex gap-3">
         <button
           onClick={generateQRCode}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          disabled={isGenerating}
+          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          🔲 Generate QR Code
+          {isGenerating ? <>⏳ Generating...</> : <>🔲 Generate QR Code</>}
         </button>
 
         <button
@@ -89,9 +133,7 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
               Copied!
             </>
           ) : (
-            <>
-              📋 Copy URL
-            </>
+            <>📋 Copy URL</>
           )}
         </button>
       </div>
