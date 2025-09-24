@@ -33,7 +33,7 @@ export default function Quiz({ quiz }: QuizProps) {
   const handleAnswer = (userAnswer: any, responseTime: number) => {
     const question = quiz.questions[currentQuestionIndex];
     const isCorrect = isAnswerCorrect(question, userAnswer);
-    const pointsEarned = calculateScore(question, isCorrect, responseTime, quiz.duration || 30);
+    const pointsEarned = calculateScore(question, isCorrect, responseTime, quiz.duration || 30, quiz.responseTimeMultiplier);
 
     const newAnswer: Answer = {
       questionIndex: currentQuestionIndex,

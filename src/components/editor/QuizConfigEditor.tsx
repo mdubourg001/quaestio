@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Quizz } from '../../types';
 
 interface QuizConfigEditorProps {
@@ -8,6 +8,11 @@ interface QuizConfigEditorProps {
 
 export default function QuizConfigEditor({ quiz, onUpdate }: QuizConfigEditorProps) {
   const [formData, setFormData] = useState(quiz);
+
+  // Sync formData with quiz prop when it changes
+  useEffect(() => {
+    setFormData(quiz);
+  }, [quiz]);
 
   const handleChange = (field: keyof Quizz, value: any) => {
     const updatedQuiz = { ...formData, [field]: value };

@@ -19,7 +19,7 @@ export default function Results({
 }: ResultsProps) {
   const [copied, setCopied] = useState(false);
 
-  const percentage = Math.round((score / maxScore) * 100);
+  const percentage = Math.round((correctAnswers / quiz.questions.length) * 100);
   const totalQuestions = quiz.questions.length;
 
   const getScoreColor = () => {
@@ -77,7 +77,7 @@ export default function Results({
               {getScoreMessage()}
             </p>
             <p className="text-gray-600">
-              You scored {score} out of {maxScore} points
+              {correctAnswers} out of {quiz.questions.length} correct answers
             </p>
           </div>
 

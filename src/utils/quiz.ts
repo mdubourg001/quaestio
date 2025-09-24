@@ -27,32 +27,38 @@ export function calculateScore(
   question: Question,
   isCorrect: boolean,
   responseTime: number,
-  totalTime: number
+  totalTime: number,
+  multiplier?: number
 ): number {
   if (!isCorrect) return 0;
 
   const basePoints = question.points || 100;
+
+  // Only apply time-based scoring if multiplier is provided and not equal to 1
+  if (!multiplier || multiplier === 1) {
+    return basePoints;
+  }
 
   if (!question.duration && !totalTime) return basePoints;
 
   const maxTime = question.duration || totalTime || 30;
   const timeRatio = Math.max(0, 1 - responseTime / maxTime);
 
-  return Math.round(basePoints * (0.5 + 0.5 * timeRatio));
+  return Math.round(basePoints * (0.5 + 0.5 * timeRatio * multiplier));
 }
 
 export function formatResults(
   quizTitle: string,
-  totalScore: number,
-  maxScore: number,
+  _totalScore: number,
+  _maxScore: number,
   correctAnswers: number,
   totalQuestions: number
 ): string {
-  const percentage = Math.round((totalScore / maxScore) * 100);
+  const percentage = Math.round((correctAnswers / totalQuestions) * 100);
 
   return `🧠 Quiz Results: ${quizTitle}
 
-📊 Score: ${totalScore}/${maxScore} points (${percentage}%)
+📊 Score: ${percentage}%
 ✅ Correct answers: ${correctAnswers}/${totalQuestions}`;
 }
 
