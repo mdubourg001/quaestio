@@ -12,12 +12,24 @@ export default function App() {
   const sampleQuiz: Quizz = {
     title: "Sample Quiz",
     description: "A test quiz",
+    responseTimeMultiplier: 1.1,
+    thumbnail:
+      "https://www.radiofrance.fr/s3/cruiser-production/2022/07/dd0af1b8-3b50-4d1c-baf8-92d2fc34942d/1200x680_gettyimages-525635046.webp",
     questions: [
       {
         type: "true-false",
-        statement: "The sky is blue",
+        statement: "Is the sky blue?",
         answer: true,
         points: 100,
+        duration: 15,
+      },
+      {
+        type: "single-choice",
+        statement: "What is 2 + 2?",
+        options: ["3", "4", "5", "22"],
+        answer: 1,
+        points: 200,
+        duration: 20,
       },
     ],
   };
@@ -69,58 +81,28 @@ export default function App() {
             {error ||
               "No quiz data found. Please access this app with a valid quiz URL containing a base64-encoded quiz in the 'q' parameter."}
           </p>
-          <p className="text-sm text-gray-500 mb-4">
-            Example:{" "}
-            <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-              ?q=[base64-encoded-quiz]
-            </code>
-          </p>
-          <div className="text-left bg-gray-50 rounded-lg p-4 mb-6 relative">
-            <h3 className="font-semibold text-gray-800 mb-2">
-              Sample Quiz Format:
-            </h3>
-            <pre className="text-xs text-gray-600 overflow-x-auto">
-              {`{
-  "title": "Sample Quiz",
-  "description": "A test quiz",
-  "questions": [
-    {
-      "type": "true-false",
-      "statement": "The sky is blue",
-      "answer": true,
-      "points": 100
-    }
-  ]
-}`}
-            </pre>
-            <div className="absolute bottom-2 right-2 flex gap-1">
-              <button
-                onClick={handleEditSample}
-                className="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors"
-                title="Edit this sample quiz"
-              >
-                Edit
-              </button>
-              <button
-                onClick={handlePreviewSample}
-                className="px-2 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-700 rounded transition-colors"
-                title="Preview this sample quiz"
-              >
-                Preview
-              </button>
-            </div>
-          </div>
 
           <div className="border-t pt-6">
             <h3 className="font-semibold text-gray-800 mb-3">
-              Want to create your own quiz?
+              Want to try it out or create your own quiz?
             </h3>
-            <a
-              href="/editor"
-              className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
-            >
-              🛠️ Open Quiz Editor
-            </a>
+
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={handlePreviewSample}
+                className="inline-block px-4 py-3 bg-green-100 rounded-lg hover:bg-green-200 transition-colors font-medium"
+              >
+                Try sample quiz
+              </button>
+
+              <a
+                href="/editor"
+                className="inline-block px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+              >
+                Open quiz editor
+              </a>
+            </div>
+
             <p className="text-xs text-gray-500 mt-2">
               Create, edit, and export quizzes with our visual editor
             </p>
