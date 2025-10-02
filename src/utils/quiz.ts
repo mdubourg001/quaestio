@@ -156,7 +156,7 @@ export function calculateScore(
   const maxTime = question.duration || totalTime || 30;
   const timeRatio = Math.max(0, 1 - responseTime / maxTime);
 
-  return Math.round(basePoints * (0.5 + 0.5 * timeRatio * multiplier));
+  return basePoints + Math.round(basePoints * timeRatio * (multiplier - 1));
 }
 
 export function formatResults(
