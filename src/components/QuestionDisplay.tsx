@@ -67,70 +67,85 @@ export default function QuestionDisplay({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-medium text-gray-500">
-              Question {questionNumber} of {totalQuestions}
-            </span>
-            {timeLeft !== null && (
-              <div className={`text-sm font-medium ${timeLeft <= 10 ? 'text-red-600' : 'text-gray-600'}`}>
-                {timeLeft}s
+    <div className="min-h-screen bg-cyber-purple flex items-center justify-center p-6">
+      <div className="max-w-3xl w-full bg-white border-brutal-thick shadow-brutal sharp animate-bounce-in">
+        {/* Header with progress and timer */}
+        <div className="bg-black text-white p-4 flex justify-between items-center border-b-[3px] border-black">
+          <div className="flex items-center gap-4">
+            <div className="bg-cyber-yellow text-black px-4 py-2 font-black text-lg border-brutal sharp">
+              Q{questionNumber}/{totalQuestions}
+            </div>
+
+            {/* Chunky progress bar */}
+            <div className="flex-1 h-8 bg-gray-dark border-brutal sharp overflow-hidden min-w-[200px]">
+              <div
+                className="h-full bg-cyber-green transition-all duration-300 flex items-center justify-center"
+                style={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
+              >
+                <span className="text-black font-black text-xs">
+                  {Math.round((questionNumber / totalQuestions) * 100)}%
+                </span>
               </div>
-            )}
+            </div>
           </div>
 
-          <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
-            />
-          </div>
+          {timeLeft !== null && (
+            <div className={`px-5 py-2 font-black text-2xl border-brutal sharp ${
+              timeLeft <= 10
+                ? 'bg-cyber-pink animate-shake'
+                : timeLeft <= 20
+                ? 'bg-cyber-orange'
+                : 'bg-cyber-green text-black'
+            }`}>
+              {timeLeft}s
+            </div>
+          )}
+        </div>
 
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="p-8">
+          <h2 className="text-3xl font-black text-black mb-6 leading-tight uppercase tracking-tight">
             {question.statement}
           </h2>
 
           {question.image && (
-            <div className="mb-6">
+            <div className="mb-8 border-brutal-thick overflow-hidden">
               <img
                 src={question.image}
                 alt="Question illustration"
-                className="w-full max-h-64 object-contain rounded-lg"
+                className="w-full max-h-72 object-contain"
               />
             </div>
           )}
 
           {question.points && (
-            <div className="text-sm text-blue-600 font-medium mb-6">
-              Points: {question.points}
+            <div className="inline-block bg-cyber-blue text-white px-4 py-2 border-brutal font-black text-sm mb-8 uppercase">
+              Worth {question.points} Points
             </div>
           )}
         </div>
 
-        <div className="space-y-4 mb-8">
+        <div className="px-8 pb-6 space-y-4">
           {question.type === 'true-false' && (
             <>
               <button
                 onClick={() => setSelectedAnswer(true)}
-                className={`w-full p-4 text-left rounded-lg border-2 transition-colors ${
+                className={`w-full p-5 text-left sharp border-brutal font-bold text-lg transition-all ${
                   selectedAnswer === true
-                    ? 'border-blue-600 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'bg-cyber-green text-black shadow-brutal'
+                    : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
                 }`}
               >
-                ✓ True
+                ✓ TRUE
               </button>
               <button
                 onClick={() => setSelectedAnswer(false)}
-                className={`w-full p-4 text-left rounded-lg border-2 transition-colors ${
+                className={`w-full p-5 text-left sharp border-brutal font-bold text-lg transition-all ${
                   selectedAnswer === false
-                    ? 'border-blue-600 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'bg-cyber-pink text-white shadow-brutal'
+                    : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
                 }`}
               >
-                ✗ False
+                ✗ FALSE
               </button>
             </>
           )}
@@ -141,13 +156,16 @@ export default function QuestionDisplay({
                 <button
                   key={index}
                   onClick={() => setSelectedAnswer(index)}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-colors ${
+                  className={`w-full p-5 text-left sharp border-brutal font-bold text-base transition-all ${
                     selectedAnswer === index
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'bg-cyber-yellow text-black shadow-brutal scale-[1.02]'
+                      : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
                   }`}
                 >
-                  {String.fromCharCode(65 + index)}. {option}
+                  <span className="inline-block bg-black text-white px-3 py-1 mr-3 text-sm">
+                    {String.fromCharCode(65 + index)}
+                  </span>
+                  {option}
                 </button>
               ))}
             </>
@@ -155,34 +173,33 @@ export default function QuestionDisplay({
 
           {question.type === 'multiple-choice' && (
             <>
-              <p className="text-sm text-gray-600 mb-4">
-                Select all correct answers:
+              <p className="text-sm text-black font-black uppercase tracking-wide mb-2 bg-cyber-orange px-3 py-2 inline-block">
+                ⚠ Select all correct answers
               </p>
               {question.options.map((option, index) => (
                 <button
                   key={index}
                   onClick={() => handleMultipleChoiceToggle(index)}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-colors ${
+                  className={`w-full p-5 text-left sharp border-brutal font-bold text-base transition-all ${
                     multipleSelections.includes(index)
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'bg-cyber-blue text-white shadow-brutal scale-[1.02]'
+                      : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
                   }`}
                 >
                   <span className="flex items-center">
                     <span
-                      className={`w-5 h-5 mr-3 border-2 rounded ${
+                      className={`w-7 h-7 mr-3 border-brutal sharp flex items-center justify-center font-black ${
                         multipleSelections.includes(index)
-                          ? 'bg-blue-600 border-blue-600'
-                          : 'border-gray-300'
+                          ? 'bg-cyber-green text-black'
+                          : 'bg-white text-transparent'
                       }`}
                     >
-                      {multipleSelections.includes(index) && (
-                        <span className="text-white text-xs flex items-center justify-center h-full">
-                          ✓
-                        </span>
-                      )}
+                      ✓
                     </span>
-                    {String.fromCharCode(65 + index)}. {option}
+                    <span className="inline-block bg-black text-white px-3 py-1 mr-3 text-sm">
+                      {String.fromCharCode(65 + index)}
+                    </span>
+                    {option}
                   </span>
                 </button>
               ))}
@@ -190,13 +207,15 @@ export default function QuestionDisplay({
           )}
         </div>
 
-        <button
-          onClick={handleSubmit}
-          disabled={!isAnswerSelected()}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
-        >
-          {questionNumber === totalQuestions ? 'Finish Quiz' : 'Next Question'}
-        </button>
+        <div className="px-8 pb-8">
+          <button
+            onClick={handleSubmit}
+            disabled={!isAnswerSelected()}
+            className="w-full btn-brutal bg-cyber-pink text-white py-5 px-8 sharp text-xl"
+          >
+            {questionNumber === totalQuestions ? '✓ FINISH QUIZ' : '→ NEXT QUESTION'}
+          </button>
+        </div>
       </div>
     </div>
   );

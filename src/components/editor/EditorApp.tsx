@@ -124,54 +124,53 @@ export default function EditorApp() {
   const validationStatus = getValidationStatus();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100">
+    <div className="min-h-screen bg-pattern-grid">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+      <header className="bg-black border-b-[4px] border-black sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">
-                <a href="/">Quaestio</a> - Editor
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center gap-4">
+              <h1 className="text-2xl font-black text-white uppercase tracking-tight">
+                <a href="/" className="hover:text-cyber-yellow transition-colors">Quaestio</a>
+                <span className="text-cyber-pink"> / Editor</span>
               </h1>
               {hasUnsavedChanges && (
-                <span className="ml-3 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
-                  Unsaved changes
+                <span className="px-3 py-1 bg-cyber-yellow text-black border-brutal sharp text-xs font-black uppercase">
+                  ⚠ Unsaved
                 </span>
               )}
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <label className="flex items-center text-sm text-gray-600">
-                  <input
-                    type="checkbox"
-                    checked={autoSaveEnabled}
-                    onChange={(e) => setAutoSaveEnabled(e.target.checked)}
-                    className="mr-2"
-                  />
-                  Auto-save
-                </label>
-              </div>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center text-sm text-white font-bold">
+                <input
+                  type="checkbox"
+                  checked={autoSaveEnabled}
+                  onChange={(e) => setAutoSaveEnabled(e.target.checked)}
+                  className="mr-2 w-5 h-5"
+                />
+                Auto-save
+              </label>
 
               <button
                 onClick={handleSaveManually}
-                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                className="btn-brutal px-4 py-2 bg-cyber-green text-black sharp text-xs font-black"
               >
-                💾 Save
+                💾 SAVE
               </button>
 
               <button
                 onClick={handleNewQuiz}
-                className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
+                className="btn-brutal px-4 py-2 bg-cyber-blue text-white sharp text-xs font-black"
               >
-                📄 New Quiz
+                + NEW
               </button>
 
               <a
                 href="/"
-                className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                className="btn-brutal px-4 py-2 bg-cyber-pink text-white sharp text-xs font-black"
               >
-                🏠 Home
+                ← HOME
               </a>
             </div>
           </div>
@@ -182,13 +181,16 @@ export default function EditorApp() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Validation Status */}
         {!validationStatus.isValid && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <h3 className="text-red-800 font-semibold mb-2">
+          <div className="bg-cyber-pink border-brutal-thick p-6 mb-8 sharp animate-shake">
+            <h3 className="text-white font-black mb-3 text-xl uppercase">
               ⚠️ Validation Issues
             </h3>
-            <ul className="text-red-700 text-sm space-y-1">
+            <ul className="text-white font-bold text-sm space-y-2">
               {validationStatus.errors.map((error, index) => (
-                <li key={index}>• {error}</li>
+                <li key={index} className="flex items-start">
+                  <span className="mr-2">▸</span>
+                  <span>{error}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -214,25 +216,37 @@ export default function EditorApp() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center text-sm text-gray-600">
-            <div>
-              Quiz: "{quiz.title}" • {quiz.questions.length} question
-              {quiz.questions.length !== 1 ? "s" : ""}
+      <footer className="bg-black border-t-[4px] border-black mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <span className="text-white font-bold text-sm">
+                "{quiz.title}"
+              </span>
+              <span className="bg-cyber-blue text-white px-3 py-1 border-brutal sharp font-black text-xs">
+                {quiz.questions.length} Q
+              </span>
               {validationStatus.isValid && (
-                <span className="text-green-600 ml-2">✓ Valid</span>
+                <span className="bg-cyber-green text-black px-3 py-1 border-brutal sharp font-black text-xs">
+                  ✓ VALID
+                </span>
               )}
             </div>
             <div>
               {autoSaveEnabled ? (
                 hasUnsavedChanges ? (
-                  <span className="text-yellow-600">Auto-saving...</span>
+                  <span className="bg-cyber-yellow text-black px-3 py-1 border-brutal sharp font-black text-xs">
+                    💾 Saving...
+                  </span>
                 ) : (
-                  <span className="text-green-600">Saved</span>
+                  <span className="bg-cyber-green text-black px-3 py-1 border-brutal sharp font-black text-xs">
+                    ✓ Saved
+                  </span>
                 )
               ) : (
-                <span className="text-gray-500">Auto-save disabled</span>
+                <span className="text-white font-bold text-xs uppercase">
+                  Auto-save OFF
+                </span>
               )}
             </div>
           </div>

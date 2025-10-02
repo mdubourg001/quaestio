@@ -14,64 +14,74 @@ const openEditor = (quiz: Quizz) => {
 
 export default function QuizLanding({ quiz, onStart }: QuizLandingProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
-        {quiz.thumbnail && (
-          <div className="h-48 overflow-hidden">
-            <img
-              src={quiz.thumbnail}
-              alt={quiz.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+    <div className="min-h-screen bg-cyber-blue flex items-center justify-center p-6">
+      <div className="max-w-2xl w-full">
+        {/* Asymmetric header */}
+        <div className="mb-8 transform -rotate-1">
+          <h1 className="text-6xl font-black text-black mb-2 uppercase tracking-tight leading-none bg-cyber-yellow inline-block px-6 py-4 border-brutal-thick shadow-brutal-hover">
             {quiz.title}
           </h1>
+        </div>
 
-          {quiz.description && (
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              {quiz.description}
-            </p>
+        <div className="bg-white border-brutal-thick shadow-brutal clip-corner-br">
+          {quiz.thumbnail && (
+            <div className="h-56 overflow-hidden border-b-[3px] border-black relative">
+              <img
+                src={quiz.thumbnail}
+                alt={quiz.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 right-4 bg-cyber-pink border-brutal px-4 py-2">
+                <span className="text-white font-black text-2xl">!</span>
+              </div>
+            </div>
           )}
 
-          <div className="space-y-3 mb-6">
-            <div className="flex items-center text-sm text-gray-500">
-              <span className="font-medium">Questions:</span>
-              <span className="ml-2">{quiz.questions.length}</span>
+          <div className="p-8">
+            {quiz.description && (
+              <p className="text-black font-semibold mb-8 text-lg leading-relaxed border-l-[6px] border-cyber-green pl-4">
+                {quiz.description}
+              </p>
+            )}
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="bg-cyber-yellow border-brutal p-4 text-center">
+                <div className="text-4xl font-black text-black">{quiz.questions.length}</div>
+                <div className="text-xs font-bold uppercase mt-1 text-black">Questions</div>
+              </div>
+
+              {quiz.duration && (
+                <div className="bg-cyber-green border-brutal p-4 text-center">
+                  <div className="text-4xl font-black text-black">{quiz.duration}s</div>
+                  <div className="text-xs font-bold uppercase mt-1 text-black">Per Q</div>
+                </div>
+              )}
+
+              {quiz.responseTimeMultiplier && (
+                <div className="bg-cyber-orange border-brutal p-4 text-center">
+                  <div className="text-4xl font-black text-black">⚡</div>
+                  <div className="text-xs font-bold uppercase mt-1 text-black">Speed Bonus</div>
+                </div>
+              )}
             </div>
 
-            {quiz.duration && (
-              <div className="flex items-center text-sm text-gray-500">
-                <span className="font-medium">Time per question:</span>
-                <span className="ml-2">{quiz.duration}s</span>
-              </div>
-            )}
+            {/* Action buttons */}
+            <div className="space-y-4">
+              <button
+                onClick={onStart}
+                className="w-full btn-brutal bg-cyber-pink text-white py-5 px-8 sharp text-xl"
+              >
+                ▶ Start Quiz
+              </button>
 
-            {quiz.responseTimeMultiplier && (
-              <div className="flex items-center text-sm text-gray-500">
-                <span className="font-medium">Time bonus:</span>
-                <span className="ml-2">Faster responses earn more points</span>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <button
-              onClick={onStart}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Start Quiz
-            </button>
-
-            <button
-              onClick={() => openEditor(quiz)}
-              className="w-full text-purple-700 hover:text-underline font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 text-sm"
-            >
-              Edit in Editor
-            </button>
+              <button
+                onClick={() => openEditor(quiz)}
+                className="w-full btn-brutal bg-white text-black py-3 px-6 sharp text-sm"
+              >
+                ✎ Edit in Editor
+              </button>
+            </div>
           </div>
         </div>
       </div>

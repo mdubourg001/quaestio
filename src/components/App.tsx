@@ -12,7 +12,7 @@ export default function App() {
   const sampleQuiz: Quizz = {
     title: "Sample Quiz",
     description: "A test quiz",
-    responseTimeMultiplier: 1.1,
+    responseTimeMultiplier: 2,
     thumbnail:
       "https://www.radiofrance.fr/s3/cruiser-production/2022/07/dd0af1b8-3b50-4d1c-baf8-92d2fc34942d/1200x680_gettyimages-525635046.webp",
     questions: [
@@ -32,12 +32,6 @@ export default function App() {
         duration: 20,
       },
     ],
-  };
-
-  const handleEditSample = () => {
-    const encodedQuiz = encodeQuizToUrl(sampleQuiz);
-    const editorUrl = `/editor?${encodedQuiz.split("?")[1]}`;
-    window.location.href = editorUrl;
   };
 
   const handlePreviewSample = () => {
@@ -63,10 +57,14 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-pattern-dots flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading quiz...</p>
+          <div className="border-brutal-thick border-black bg-cyber-yellow w-16 h-16 mx-auto mb-6 animate-bounce-in flex items-center justify-center">
+            <div className="text-3xl font-black">?</div>
+          </div>
+          <p className="text-black font-bold text-lg uppercase tracking-wider">
+            Loading quiz...
+          </p>
         </div>
       </div>
     );
@@ -74,37 +72,42 @@ export default function App() {
 
   if (error || !quiz) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Quaestio</h1>
-          <p className="text-gray-600 mb-6">
+      <div className="min-h-screen bg-pattern-grid flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white border-brutal-thick shadow-brutal p-8 text-center animate-bounce-in">
+          <div className="inline-block bg-cyber-pink px-4 py-2 border-brutal mb-6">
+            <h1 className="text-3xl font-black text-white uppercase tracking-tight">
+              Quaestio
+            </h1>
+          </div>
+
+          <p className="text-black font-semibold mb-8 text-base leading-relaxed">
             {error ||
-              "No quiz data found. Please access this app with a valid quiz URL containing a base64-encoded quiz in the 'q' parameter."}
+              "No quiz data found. Please access this app with a valid quiz URL."}
           </p>
 
-          <div className="border-t pt-6">
-            <h3 className="font-semibold text-gray-800 mb-3">
-              Want to try it out or create your own quiz?
+          <div className="border-brutal-thick border-black p-6 mb-6 bg-cyber-yellow">
+            <h3 className="font-black text-black mb-4 text-lg uppercase">
+              Get Started
             </h3>
 
-            <div className="flex justify-center gap-3">
+            <div className="flex flex-col gap-3">
               <button
                 onClick={handlePreviewSample}
-                className="inline-block px-4 py-3 bg-green-100 rounded-lg hover:bg-green-200 transition-colors font-medium"
+                className="btn-brutal px-5 py-3 bg-cyber-green text-black sharp"
               >
-                Try sample quiz
+                Try Sample Quiz
               </button>
 
               <a
                 href="/editor"
-                className="inline-block px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                className="btn-brutal px-5 py-3 bg-cyber-purple text-white sharp inline-block"
               >
-                Open quiz editor
+                Open Quiz Editor
               </a>
             </div>
 
-            <p className="text-xs text-gray-500 mt-2">
-              Create, edit, and export quizzes with our visual editor
+            <p className="text-xs text-black mt-4 font-bold uppercase tracking-wide">
+              Create & Export Your Own Quizzes
             </p>
           </div>
         </div>

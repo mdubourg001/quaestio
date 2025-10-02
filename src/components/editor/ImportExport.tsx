@@ -130,49 +130,53 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Import & Export</h2>
+    <div className="bg-white border-brutal-thick shadow-brutal p-6 sharp">
+      <div className="inline-block bg-cyber-green px-4 py-2 border-brutal mb-6">
+        <h2 className="text-xl font-black text-black uppercase">Import & Export</h2>
+      </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-3 flex-wrap">
         <button
           onClick={handleExport}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="btn-brutal px-5 py-3 bg-cyber-blue text-white sharp text-sm"
         >
-          📤 Export Quiz
+          📤 EXPORT
         </button>
 
         <button
           onClick={() => setShowImport(true)}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="btn-brutal px-5 py-3 bg-cyber-purple text-white sharp text-sm"
         >
-          📥 Import Quiz
+          📥 IMPORT
         </button>
 
         <button
           onClick={generatePreviewUrl}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          className="btn-brutal px-5 py-3 bg-cyber-pink text-white sharp text-sm"
         >
-          👀 Preview Quiz
+          👀 PREVIEW
         </button>
       </div>
 
       {/* Export Modal */}
       {showExport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-            <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-2xl w-full sharp animate-bounce-in">
+            <div className="bg-black p-4 border-b-[3px] border-black">
+              <h3 className="text-xl font-black text-cyber-yellow uppercase">
                 Export Quiz
               </h3>
+            </div>
+            <div className="p-6">
 
               <div className="space-y-4">
                 {/* Export Format Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-xs font-black text-black mb-3 uppercase tracking-wide">
                     Export Format
                   </label>
-                  <div className="flex space-x-4">
-                    <label className="flex items-center">
+                  <div className="flex gap-3">
+                    <label className="flex items-center bg-cyber-blue text-white px-4 py-2 border-brutal sharp cursor-pointer">
                       <input
                         type="radio"
                         name="exportFormat"
@@ -181,11 +185,11 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         onChange={(e) =>
                           setExportFormat(e.target.value as "base64" | "json")
                         }
-                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                        className="mr-2 w-4 h-4"
                       />
-                      Base64 Encoded
+                      <span className="font-black text-sm">Base64</span>
                     </label>
-                    <label className="flex items-center">
+                    <label className="flex items-center bg-cyber-purple text-white px-4 py-2 border-brutal sharp cursor-pointer">
                       <input
                         type="radio"
                         name="exportFormat"
@@ -194,19 +198,19 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                         onChange={(e) =>
                           setExportFormat(e.target.value as "base64" | "json")
                         }
-                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                        className="mr-2 w-4 h-4"
                       />
-                      Raw JSON
+                      <span className="font-black text-sm">JSON</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Export Data Display */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
                     {exportFormat === "base64"
-                      ? "Base64 Encoded Data"
-                      : "Quiz JSON Data"}
+                      ? "Base64 Data"
+                      : "JSON Data"}
                   </label>
                   <textarea
                     value={
@@ -214,36 +218,34 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                     }
                     readOnly
                     rows={8}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 font-mono text-sm"
+                    className="w-full px-4 py-3 border-brutal sharp bg-gray-light font-mono text-sm font-bold resize-none"
                   />
-                  <div className="flex space-x-2 mt-2">
+                  <div className="flex gap-2 mt-3">
                     <button
                       onClick={handleCopyExportData}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                      className="btn-brutal px-4 py-2 bg-cyber-green text-black sharp text-xs"
                     >
                       {copied
-                        ? "✓ Copied!"
-                        : `📋 Copy ${
-                            exportFormat === "base64" ? "Base64" : "JSON"
-                          }`}
+                        ? "✓ COPIED!"
+                        : `📋 COPY ${exportFormat === "base64" ? "BASE64" : "JSON"}`}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Shareable Quiz URL
+                  <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
+                    Shareable URL
                   </label>
-                  <div className="flex space-x-2">
+                  <div className="flex gap-2">
                     <input
                       type="text"
                       value={encodeQuizToUrl(quiz)}
                       readOnly
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm"
+                      className="flex-1 px-4 py-3 border-brutal sharp bg-gray-light text-sm font-bold"
                     />
                     <button
                       onClick={handleCopyUrl}
-                      className="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors"
+                      className="btn-brutal px-4 py-3 bg-cyber-yellow text-black sharp text-sm font-black"
                     >
                       {copied ? "✓" : "📋"}
                     </button>
@@ -251,12 +253,12 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t">
+              <div className="flex justify-end mt-6 pt-4 border-t-[3px] border-black">
                 <button
                   onClick={() => setShowExport(false)}
-                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="btn-brutal px-5 py-3 bg-black text-white sharp text-sm"
                 >
-                  Close
+                  CLOSE
                 </button>
               </div>
             </div>
@@ -266,21 +268,23 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
 
       {/* Import Modal */}
       {showImport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-            <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-2xl w-full sharp animate-bounce-in">
+            <div className="bg-black p-4 border-b-[3px] border-black">
+              <h3 className="text-xl font-black text-cyber-green uppercase">
                 Import Quiz
               </h3>
+            </div>
+            <div className="p-6">
 
               <div className="space-y-4">
                 {/* Format Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-xs font-black text-black mb-3 uppercase tracking-wide">
                     Import Format
                   </label>
-                  <div className="flex space-x-4">
-                    <label className="flex items-center">
+                  <div className="flex gap-3">
+                    <label className="flex items-center bg-cyber-blue text-white px-4 py-2 border-brutal sharp cursor-pointer">
                       <input
                         type="radio"
                         name="importFormat"
@@ -291,11 +295,11 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                           setImportData("");
                           setImportError("");
                         }}
-                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                        className="mr-2 w-4 h-4"
                       />
-                      Base64 Encoded
+                      <span className="font-black text-sm">Base64</span>
                     </label>
-                    <label className="flex items-center">
+                    <label className="flex items-center bg-cyber-purple text-white px-4 py-2 border-brutal sharp cursor-pointer">
                       <input
                         type="radio"
                         name="importFormat"
@@ -306,63 +310,62 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                           setImportData("");
                           setImportError("");
                         }}
-                        className="mr-2 text-blue-600 focus:ring-blue-500"
+                        className="mr-2 w-4 h-4"
                       />
-                      Raw JSON
+                      <span className="font-black text-sm">JSON</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Data Input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
                     {importFormat === "base64"
-                      ? "Base64 Encoded Quiz Data"
-                      : "Quiz JSON Data"}
+                      ? "Base64 Data"
+                      : "JSON Data"}
                   </label>
                   <textarea
                     value={importData}
                     onChange={(e) => setImportData(e.target.value)}
                     rows={8}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border-brutal sharp bg-white font-mono text-sm font-bold resize-none focus:outline-none focus:shadow-brutal"
                     placeholder={
                       importFormat === "base64"
-                        ? "Paste your base64-encoded quiz data here..."
-                        : "Paste your raw JSON quiz data here..."
+                        ? "Paste base64 data here..."
+                        : "Paste JSON data here..."
                     }
                   />
                   {importError && (
-                    <p className="text-red-600 text-sm mt-2 whitespace-pre-line">
-                      {importError}
+                    <p className="text-cyber-pink font-bold text-sm mt-2 whitespace-pre-line bg-cyber-pink bg-opacity-10 p-2 border-brutal">
+                      ⚠ {importError}
                     </p>
                   )}
                 </div>
 
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                  <p className="text-sm text-yellow-800">
-                    <strong>Warning:</strong> Importing will replace your
-                    current quiz. Make sure to export your current work first if
-                    you want to keep it.
+                <div className="bg-cyber-yellow border-brutal-thick p-4 sharp">
+                  <p className="text-sm text-black font-bold">
+                    ⚠ <span className="font-black">WARNING:</span> Importing will replace your
+                    current quiz. Export first if you want to keep it!
                   </p>
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t">
+              <div className="flex justify-end gap-3 mt-6 pt-4 border-t-[3px] border-black">
                 <button
                   onClick={() => {
                     setShowImport(false);
                     setImportData("");
                     setImportError("");
                   }}
-                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="btn-brutal px-5 py-3 bg-white text-black sharp text-sm"
                 >
-                  Cancel
+                  CANCEL
                 </button>
                 <button
                   onClick={handleImport}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="btn-brutal px-5 py-3 bg-cyber-green text-black sharp text-sm"
                 >
-                  Import Quiz
+                  IMPORT QUIZ
                 </button>
               </div>
             </div>

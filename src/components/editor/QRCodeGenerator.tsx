@@ -106,84 +106,80 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Share</h2>
+    <div className="bg-white border-brutal-thick shadow-brutal p-6 sharp">
+      <div className="inline-block bg-cyber-pink px-4 py-2 border-brutal mb-6">
+        <h2 className="text-xl font-black text-white uppercase">Share</h2>
+      </div>
 
-      <p className="text-gray-600 mb-4">
-        Generate a QR code for easy sharing of your quiz. Users can scan the
-        code to instantly access your quiz.
+      <p className="text-black font-bold mb-6 text-sm">
+        Generate a QR code for easy sharing. Users scan to instantly access your quiz.
       </p>
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <button
           onClick={generateQRCode}
           disabled={isGenerating}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-brutal px-5 py-3 bg-cyber-purple text-white sharp text-sm disabled:opacity-50"
         >
-          {isGenerating ? <>⏳ Generating...</> : <>🔲 Generate QR Code</>}
+          {isGenerating ? <>⏳ GENERATING...</> : <>🔲 QR CODE</>}
         </button>
 
         <button
           onClick={copyUrl}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="btn-brutal px-5 py-3 bg-cyber-blue text-white sharp text-sm"
         >
-          {copied ? (
-            <>
-              <span className="mr-2">✓</span>
-              Copied!
-            </>
-          ) : (
-            <>📋 Copy URL</>
-          )}
+          {copied ? <>✓ COPIED!</> : <>📋 COPY URL</>}
         </button>
       </div>
 
       {showQRCode && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-            <div className="p-6 text-center">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                QR Code for "{quiz.title}"
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-lg w-full sharp animate-bounce-in">
+            <div className="bg-black p-4 border-b-[3px] border-black">
+              <h3 className="text-xl font-black text-cyber-pink uppercase text-center">
+                QR Code: {quiz.title}
               </h3>
+            </div>
 
-              <div className="mb-4">
+            <div className="p-8 text-center">
+              <div className="mb-6 inline-block border-brutal-thick bg-white p-4">
                 <img
                   src={qrCodeUrl}
                   alt="QR Code for quiz"
-                  className="mx-auto border border-gray-300 rounded-lg"
+                  className="mx-auto"
                   width={300}
                   height={300}
                 />
               </div>
 
-              <p className="text-sm text-gray-600 mb-4">
-                Scan this QR code to access the quiz directly
+              <p className="text-sm text-black font-bold mb-6 bg-cyber-yellow px-4 py-2 inline-block border-brutal uppercase tracking-wide">
+                📱 Scan to access quiz
               </p>
 
-              <div className="flex justify-center space-x-3">
+              <div className="flex justify-center gap-3 mb-6">
                 <button
                   onClick={downloadQRCode}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="btn-brutal px-5 py-3 bg-cyber-green text-black sharp text-sm"
                 >
-                  📱 Download QR Code
+                  💾 DOWNLOAD
                 </button>
                 <button
                   onClick={() => setShowQRCode(false)}
-                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="btn-brutal px-5 py-3 bg-black text-white sharp text-sm"
                 >
-                  Close
+                  CLOSE
                 </button>
               </div>
 
-              <div className="mt-4 pt-4 border-t text-left">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="pt-6 border-t-[3px] border-black text-left">
+                <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
                   Quiz URL:
                 </label>
                 <input
                   type="text"
                   value={encodeQuizToUrl(quiz)}
                   readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm"
+                  className="w-full px-4 py-3 border-brutal sharp bg-gray-light text-sm font-bold"
                 />
               </div>
             </div>

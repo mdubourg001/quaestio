@@ -28,8 +28,8 @@ export default function QuestionTypeSelector({ selectedType, onTypeChange }: Que
   ];
 
   return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 mb-3">
+    <div className="mb-6">
+      <label className="block text-xs font-black text-black mb-3 uppercase tracking-wide">
         Question Type
       </label>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -37,17 +37,19 @@ export default function QuestionTypeSelector({ selectedType, onTypeChange }: Que
           <button
             key={type.type}
             onClick={() => onTypeChange(type.type)}
-            className={`p-4 rounded-lg border-2 text-left transition-colors ${
+            className={`p-4 sharp text-left transition-all border-brutal ${
               selectedType === type.type
-                ? 'border-blue-600 bg-blue-50'
-                : 'border-gray-300 hover:border-gray-400 bg-white'
+                ? 'bg-cyber-purple text-white shadow-brutal scale-[1.02]'
+                : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
             }`}
           >
             <div className="flex items-center mb-2">
-              <span className="text-xl mr-2">{type.icon}</span>
-              <span className="font-medium text-gray-900">{type.name}</span>
+              <span className="text-2xl mr-2 font-black">{type.icon}</span>
+              <span className="font-black text-sm uppercase tracking-tight">{type.name}</span>
             </div>
-            <p className="text-sm text-gray-600">{type.description}</p>
+            <p className={`text-xs font-bold ${selectedType === type.type ? 'text-white' : 'text-black'}`}>
+              {type.description}
+            </p>
           </button>
         ))}
       </div>
