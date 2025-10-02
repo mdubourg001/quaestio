@@ -131,18 +131,23 @@ export default function EditorApp() {
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-black text-white uppercase tracking-tight">
-                <a href="/" className="hover:text-cyber-yellow transition-colors">Quaestio</a>
+                <a
+                  href="/"
+                  className="hover:text-cyber-yellow transition-colors"
+                >
+                  Quaestio
+                </a>
                 <span className="text-cyber-pink"> / Editor</span>
               </h1>
               {hasUnsavedChanges && (
-                <span className="px-3 py-1 bg-cyber-yellow text-black border-brutal sharp text-xs font-black uppercase">
+                <span className="px-3 py-1 bg-cyber-yellow text-black border-brutal sharp text-xs font-black uppercase hidden md:inline">
                   ⚠ Unsaved
                 </span>
               )}
             </div>
 
             <div className="flex items-center gap-3">
-              <label className="flex items-center text-sm text-white font-bold">
+              <label className="items-center text-sm text-white font-bold hidden md:flex">
                 <input
                   type="checkbox"
                   checked={autoSaveEnabled}
@@ -154,7 +159,7 @@ export default function EditorApp() {
 
               <button
                 onClick={handleSaveManually}
-                className="btn-brutal px-4 py-2 bg-cyber-green text-black sharp text-xs font-black"
+                className="btn-brutal px-4 py-2 bg-cyber-green text-black sharp text-xs font-black hidden md:block"
               >
                 💾 SAVE
               </button>

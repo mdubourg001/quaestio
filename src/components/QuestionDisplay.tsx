@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import type { Question } from '../types';
+import { useState, useEffect } from "react";
+import type { Question } from "../types";
 
 interface QuestionDisplayProps {
   question: Question;
@@ -44,7 +44,7 @@ export default function QuestionDisplay({
     const responseTime = (Date.now() - startTime) / 1000;
     let answer = selectedAnswer;
 
-    if (question.type === 'multiple-choice') {
+    if (question.type === "multiple-choice") {
       answer = multipleSelections;
     }
 
@@ -53,14 +53,12 @@ export default function QuestionDisplay({
 
   const handleMultipleChoiceToggle = (index: number) => {
     setMultipleSelections((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
 
   const isAnswerSelected = () => {
-    if (question.type === 'multiple-choice') {
+    if (question.type === "multiple-choice") {
       return multipleSelections.length > 0;
     }
     return selectedAnswer !== null;
@@ -70,14 +68,14 @@ export default function QuestionDisplay({
     <div className="min-h-screen bg-cyber-purple flex items-center justify-center p-6">
       <div className="max-w-3xl w-full bg-white border-brutal-thick shadow-brutal sharp animate-bounce-in">
         {/* Header with progress and timer */}
-        <div className="bg-black text-white p-4 flex justify-between items-center border-b-[3px] border-black">
-          <div className="flex items-center gap-4">
+        <div className="bg-black text-white p-4 flex gap-4 justify-between items-center border-b-[3px] border-black">
+          <div className="w-full flex items-center gap-4">
             <div className="bg-cyber-yellow text-black px-4 py-2 font-black text-lg border-brutal sharp">
               Q{questionNumber}/{totalQuestions}
             </div>
 
             {/* Chunky progress bar */}
-            <div className="flex-1 h-8 bg-gray-dark border-brutal sharp overflow-hidden min-w-[200px]">
+            <div className="flex-1 h-8 bg-gray-dark border-brutal sharp overflow-hidden w-full md:min-w-[200px]">
               <div
                 className="h-full bg-cyber-green transition-all duration-300 flex items-center justify-center"
                 style={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
@@ -90,14 +88,16 @@ export default function QuestionDisplay({
           </div>
 
           {timeLeft !== null && (
-            <div className={`px-5 py-2 font-black text-2xl border-brutal sharp ${
-              timeLeft <= 10
-                ? 'bg-cyber-pink animate-shake'
-                : timeLeft <= 20
-                ? 'bg-cyber-orange'
-                : 'bg-cyber-green text-black'
-            }`}>
-              {timeLeft}s
+            <div
+              className={`px-5 py-2 font-black text-2xl border-brutal sharp ${
+                timeLeft <= 10
+                  ? "bg-cyber-pink animate-shake"
+                  : timeLeft <= 20
+                  ? "bg-cyber-orange"
+                  : "bg-cyber-green text-black"
+              }`}
+            >
+              <span className="tabular-nums">{timeLeft}</span>s
             </div>
           )}
         </div>
@@ -125,14 +125,14 @@ export default function QuestionDisplay({
         </div>
 
         <div className="px-8 pb-6 space-y-4">
-          {question.type === 'true-false' && (
+          {question.type === "true-false" && (
             <>
               <button
                 onClick={() => setSelectedAnswer(true)}
                 className={`w-full p-5 text-left sharp border-brutal font-bold text-lg transition-all ${
                   selectedAnswer === true
-                    ? 'bg-cyber-green text-black shadow-brutal'
-                    : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
+                    ? "bg-cyber-green text-black shadow-brutal"
+                    : "bg-white text-black hover:translate-x-1 hover:translate-y-1"
                 }`}
               >
                 ✓ TRUE
@@ -141,8 +141,8 @@ export default function QuestionDisplay({
                 onClick={() => setSelectedAnswer(false)}
                 className={`w-full p-5 text-left sharp border-brutal font-bold text-lg transition-all ${
                   selectedAnswer === false
-                    ? 'bg-cyber-pink text-white shadow-brutal'
-                    : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
+                    ? "bg-cyber-pink text-white shadow-brutal"
+                    : "bg-white text-black hover:translate-x-1 hover:translate-y-1"
                 }`}
               >
                 ✗ FALSE
@@ -150,7 +150,7 @@ export default function QuestionDisplay({
             </>
           )}
 
-          {question.type === 'single-choice' && (
+          {question.type === "single-choice" && (
             <>
               {question.options.map((option, index) => (
                 <button
@@ -158,8 +158,8 @@ export default function QuestionDisplay({
                   onClick={() => setSelectedAnswer(index)}
                   className={`w-full p-5 text-left sharp border-brutal font-bold text-base transition-all ${
                     selectedAnswer === index
-                      ? 'bg-cyber-yellow text-black shadow-brutal scale-[1.02]'
-                      : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
+                      ? "bg-cyber-yellow text-black shadow-brutal scale-[1.02]"
+                      : "bg-white text-black hover:translate-x-1 hover:translate-y-1"
                   }`}
                 >
                   <span className="inline-block bg-black text-white px-3 py-1 mr-3 text-sm">
@@ -171,7 +171,7 @@ export default function QuestionDisplay({
             </>
           )}
 
-          {question.type === 'multiple-choice' && (
+          {question.type === "multiple-choice" && (
             <>
               <p className="text-sm text-black font-black uppercase tracking-wide mb-2 bg-cyber-orange px-3 py-2 inline-block">
                 ⚠ Select all correct answers
@@ -182,16 +182,16 @@ export default function QuestionDisplay({
                   onClick={() => handleMultipleChoiceToggle(index)}
                   className={`w-full p-5 text-left sharp border-brutal font-bold text-base transition-all ${
                     multipleSelections.includes(index)
-                      ? 'bg-cyber-blue text-white shadow-brutal scale-[1.02]'
-                      : 'bg-white text-black hover:translate-x-1 hover:translate-y-1'
+                      ? "bg-cyber-blue text-white shadow-brutal scale-[1.02]"
+                      : "bg-white text-black hover:translate-x-1 hover:translate-y-1"
                   }`}
                 >
                   <span className="flex items-center">
                     <span
                       className={`w-7 h-7 mr-3 border-brutal sharp flex items-center justify-center font-black ${
                         multipleSelections.includes(index)
-                          ? 'bg-cyber-green text-black'
-                          : 'bg-white text-transparent'
+                          ? "bg-cyber-green text-black"
+                          : "bg-white text-transparent"
                       }`}
                     >
                       ✓
@@ -213,7 +213,9 @@ export default function QuestionDisplay({
             disabled={!isAnswerSelected()}
             className="w-full btn-brutal bg-cyber-pink text-white py-5 px-8 sharp text-xl"
           >
-            {questionNumber === totalQuestions ? '✓ FINISH QUIZ' : '→ NEXT QUESTION'}
+            {questionNumber === totalQuestions
+              ? "✓ FINISH QUIZ"
+              : "→ NEXT QUESTION"}
           </button>
         </div>
       </div>

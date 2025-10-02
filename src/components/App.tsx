@@ -12,6 +12,7 @@ export default function App() {
   const sampleQuiz: Quizz = {
     title: "Sample Quiz",
     description: "A test quiz",
+    duration: 15,
     responseTimeMultiplier: 2,
     thumbnail:
       "https://www.radiofrance.fr/s3/cruiser-production/2022/07/dd0af1b8-3b50-4d1c-baf8-92d2fc34942d/1200x680_gettyimages-525635046.webp",
@@ -21,7 +22,6 @@ export default function App() {
         statement: "Is the sky blue?",
         answer: true,
         points: 100,
-        duration: 15,
       },
       {
         type: "single-choice",

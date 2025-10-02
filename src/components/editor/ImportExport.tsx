@@ -132,7 +132,9 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
   return (
     <div className="bg-white border-brutal-thick shadow-brutal p-6 sharp">
       <div className="inline-block bg-cyber-green px-4 py-2 border-brutal mb-6">
-        <h2 className="text-xl font-black text-black uppercase">Import & Export</h2>
+        <h2 className="text-xl font-black text-black uppercase">
+          Import & Export
+        </h2>
       </div>
 
       <div className="flex gap-3 flex-wrap">
@@ -160,7 +162,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
 
       {/* Export Modal */}
       {showExport && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] flex items-center justify-center p-4 z-50">
           <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-2xl w-full sharp animate-bounce-in">
             <div className="bg-black p-4 border-b-[3px] border-black">
               <h3 className="text-xl font-black text-cyber-yellow uppercase">
@@ -168,7 +170,6 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
               </h3>
             </div>
             <div className="p-6">
-
               <div className="space-y-4">
                 {/* Export Format Selection */}
                 <div>
@@ -208,9 +209,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 {/* Export Data Display */}
                 <div>
                   <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
-                    {exportFormat === "base64"
-                      ? "Base64 Data"
-                      : "JSON Data"}
+                    {exportFormat === "base64" ? "Base64 Data" : "JSON Data"}
                   </label>
                   <textarea
                     value={
@@ -227,7 +226,9 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                     >
                       {copied
                         ? "✓ COPIED!"
-                        : `📋 COPY ${exportFormat === "base64" ? "BASE64" : "JSON"}`}
+                        : `📋 COPY ${
+                            exportFormat === "base64" ? "BASE64" : "JSON"
+                          }`}
                     </button>
                   </div>
                 </div>
@@ -268,7 +269,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
 
       {/* Import Modal */}
       {showImport && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-70 flex items-center justify-center p-4 z-50">
           <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-2xl w-full sharp animate-bounce-in">
             <div className="bg-black p-4 border-b-[3px] border-black">
               <h3 className="text-xl font-black text-cyber-green uppercase">
@@ -276,7 +277,6 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
               </h3>
             </div>
             <div className="p-6">
-
               <div className="space-y-4">
                 {/* Format Selection */}
                 <div>
@@ -320,9 +320,7 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
                 {/* Data Input */}
                 <div>
                   <label className="block text-xs font-black text-black mb-2 uppercase tracking-wide">
-                    {importFormat === "base64"
-                      ? "Base64 Data"
-                      : "JSON Data"}
+                    {importFormat === "base64" ? "Base64 Data" : "JSON Data"}
                   </label>
                   <textarea
                     value={importData}
@@ -344,8 +342,9 @@ export default function ImportExport({ quiz, onImport }: ImportExportProps) {
 
                 <div className="bg-cyber-yellow border-brutal-thick p-4 sharp">
                   <p className="text-sm text-black font-bold">
-                    ⚠ <span className="font-black">WARNING:</span> Importing will replace your
-                    current quiz. Export first if you want to keep it!
+                    ⚠ <span className="font-black">WARNING:</span> Importing
+                    will replace your current quiz. Export first if you want to
+                    keep it!
                   </p>
                 </div>
               </div>

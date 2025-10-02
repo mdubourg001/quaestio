@@ -111,9 +111,9 @@ export default function QuestionList({
 
   return (
     <div className="bg-white border-brutal-thick shadow-brutal p-6 sharp">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between gap-1 items-center mb-6">
         <div className="inline-block bg-cyber-orange px-4 py-2 border-brutal">
-          <h2 className="text-xl font-black text-white uppercase">
+          <h2 className="text-md md:text-xl font-black text-white uppercase">
             Questions ({questions.length})
           </h2>
         </div>
@@ -128,7 +128,9 @@ export default function QuestionList({
       {questions.length === 0 ? (
         <div className="text-center py-12 border-brutal-thick bg-gray-light">
           <div className="text-6xl mb-4">📝</div>
-          <p className="text-black font-bold mb-6 uppercase tracking-wide">No questions yet</p>
+          <p className="text-black font-bold mb-6 uppercase tracking-wide">
+            No questions yet
+          </p>
           <button
             onClick={handleAddNew}
             className="btn-brutal px-6 py-3 bg-cyber-blue text-white sharp"
@@ -199,27 +201,29 @@ export default function QuestionList({
                   </div>
 
                   {/* Action buttons */}
-                  <button
-                    onClick={() => handleEdit(index)}
-                    className="px-3 py-2 bg-cyber-blue text-white border-brutal sharp hover:bg-cyber-purple transition-colors font-black text-sm"
-                    title="Edit"
-                  >
-                    ✏
-                  </button>
-                  <button
-                    onClick={() => handleDuplicate(index)}
-                    className="px-3 py-2 bg-cyber-green text-black border-brutal sharp hover:bg-cyber-yellow transition-colors font-black text-sm"
-                    title="Duplicate"
-                  >
-                    📋
-                  </button>
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="px-3 py-2 bg-cyber-pink text-white border-brutal sharp hover:bg-black transition-colors font-black text-sm"
-                    title="Delete"
-                  >
-                    🗑
-                  </button>
+                  <div className="flex flex-col md:flex-row gap-1">
+                    <button
+                      onClick={() => handleEdit(index)}
+                      className="px-3 py-2 bg-cyber-blue text-white border-brutal sharp hover:bg-cyber-purple transition-colors font-black text-sm"
+                      title="Edit"
+                    >
+                      ✏
+                    </button>
+                    <button
+                      onClick={() => handleDuplicate(index)}
+                      className="px-3 py-2 bg-cyber-green text-black border-brutal sharp hover:bg-cyber-yellow transition-colors font-black text-sm"
+                      title="Duplicate"
+                    >
+                      📋
+                    </button>
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="px-3 py-2 bg-cyber-pink text-white border-brutal sharp hover:bg-black transition-colors font-black text-sm"
+                      title="Delete"
+                    >
+                      🗑
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

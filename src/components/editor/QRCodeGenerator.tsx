@@ -112,7 +112,8 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
       </div>
 
       <p className="text-black font-bold mb-6 text-sm">
-        Generate a QR code for easy sharing. Users scan to instantly access your quiz.
+        Generate a QR code for easy sharing. Users scan to instantly access your
+        quiz.
       </p>
 
       <div className="flex gap-3 flex-wrap">
@@ -133,7 +134,7 @@ export default function QRCodeGenerator({ quiz }: QRCodeGeneratorProps) {
       </div>
 
       {showQRCode && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-70 flex items-center justify-center p-4 z-50">
           <div className="bg-white border-brutal-thick shadow-brutal-hover max-w-lg w-full sharp animate-bounce-in">
             <div className="bg-black p-4 border-b-[3px] border-black">
               <h3 className="text-xl font-black text-cyber-pink uppercase text-center">

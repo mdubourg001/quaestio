@@ -46,22 +46,33 @@ export default function QuizLanding({ quiz, onStart }: QuizLandingProps) {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-4 mb-8">
-              <div className="bg-cyber-yellow border-brutal p-4 text-center">
-                <div className="text-4xl font-black text-black">{quiz.questions.length}</div>
-                <div className="text-xs font-bold uppercase mt-1 text-black">Questions</div>
+              <div className="flex flex-col bg-cyber-yellow border-brutal p-2 md:p-4 text-center">
+                <span className="text-3xl md:text-4xl font-black text-black">
+                  {quiz.questions.length}
+                </span>
+                <span className="text-xs font-bold uppercase mt-1 text-black">
+                  <span className="md:hidden">Quest.</span>
+                  <span className="hidden md:inline">Questions</span>
+                </span>
               </div>
 
               {quiz.duration && (
-                <div className="bg-cyber-green border-brutal p-4 text-center">
-                  <div className="text-4xl font-black text-black">{quiz.duration}s</div>
-                  <div className="text-xs font-bold uppercase mt-1 text-black">Per Q</div>
+                <div className="flex flex-col bg-cyber-green border-brutal p-2 md:p-4 text-center">
+                  <span className="text-3xl md:text-4xl font-black text-black">
+                    {quiz.duration}s
+                  </span>
+                  <span className="text-xs font-bold uppercase mt-1 text-black">
+                    Per Q
+                  </span>
                 </div>
               )}
 
               {quiz.responseTimeMultiplier && (
-                <div className="bg-cyber-orange border-brutal p-4 text-center">
-                  <div className="text-4xl font-black text-black">⚡</div>
-                  <div className="text-xs font-bold uppercase mt-1 text-black">Speed Bonus</div>
+                <div className="flex flex-col bg-cyber-orange border-brutal p-2 md:p-4 text-center">
+                  <span className="text-4xl font-black text-black">⚡</span>
+                  <span className="text-xs font-bold uppercase mt-1 text-black">
+                    Speed Bonus
+                  </span>
                 </div>
               )}
             </div>
