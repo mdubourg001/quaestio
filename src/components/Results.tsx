@@ -6,7 +6,6 @@ import { Base64 } from "../utils/b64";
 interface ResultsProps {
   quiz: Quizz;
   score: number;
-  maxScore: number;
   correctAnswers: number;
   onRestart: () => void;
 }
@@ -14,7 +13,6 @@ interface ResultsProps {
 export default function Results({
   quiz,
   score,
-  maxScore,
   correctAnswers,
   onRestart,
 }: ResultsProps) {
@@ -35,7 +33,6 @@ export default function Results({
     const formattedResults = formatResults(
       quiz.title,
       score,
-      maxScore,
       correctAnswers,
       totalQuestions
     );
@@ -121,7 +118,7 @@ export default function Results({
               <div className="bg-cyber-blue border-brutal p-4 col-span-4">
                 <div className="text-5xl font-black text-white">{score}</div>
                 <div className="text-sm font-bold text-white uppercase mt-2">
-                  Total Points (Max: {maxScore})
+                  Total Points
                 </div>
               </div>
             </div>

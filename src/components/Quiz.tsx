@@ -81,10 +81,6 @@ export default function Quiz({ quiz }: QuizProps) {
     (sum, answer) => sum + answer.pointsEarned,
     0
   );
-  const maxScore = quiz.questions.reduce(
-    (sum, question) => sum + (question.points || 100),
-    0
-  );
   const correctAnswers = answers.filter((answer) => answer.isCorrect).length;
 
   if (state === "landing") {
@@ -188,7 +184,6 @@ export default function Quiz({ quiz }: QuizProps) {
     <Results
       quiz={quiz}
       score={totalScore}
-      maxScore={maxScore}
       correctAnswers={correctAnswers}
       onRestart={handleRestart}
     />

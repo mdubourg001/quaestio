@@ -162,7 +162,6 @@ export function calculateScore(
 export function formatResults(
   quizTitle: string,
   totalScore: number,
-  _maxScore: number,
   correctAnswers: number,
   totalQuestions: number
 ): string {
