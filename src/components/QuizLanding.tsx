@@ -18,7 +18,7 @@ export default function QuizLanding({ quiz, onStart }: QuizLandingProps) {
       <div className="max-w-2xl w-full">
         {/* Asymmetric header */}
         <div className="mb-8 transform -rotate-1">
-          <h1 className="text-6xl font-black text-black mb-2 uppercase tracking-tight leading-none bg-cyber-yellow inline-block px-6 py-4 border-brutal-thick shadow-brutal-hover">
+          <h1 className="text-6xl font-black break-all md:break-normal text-black mb-2 uppercase tracking-tight leading-none bg-cyber-yellow inline-block px-6 py-4 border-brutal-thick shadow-brutal-hover">
             {quiz.title}
           </h1>
         </div>
